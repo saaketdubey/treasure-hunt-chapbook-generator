@@ -6,7 +6,7 @@ This repository holds the generator: a skill that interviews the author about a 
 
 ## Status
 
-Draft, work in progress. The map subsystem is complete and tested. The riddle, language, instruction, sourcing and layout stages are still being developed, so the full-booklet pipeline should be read as a working baseline, not a finished tool. Nothing here has been through a final editorial review.
+Draft, work in progress. The map, sourcing and riddle-review stages are complete and tested. The language, instruction and layout stages are still being developed, so the full-booklet pipeline should be read as a working baseline, not a finished tool. Nothing here has been through a final editorial review.
 
 The three map tests are fixtures: they exist to prove the generator reproduces the same map from the same inputs, and to catch regressions. They are not published hunts.
 
@@ -21,6 +21,10 @@ The three map tests are fixtures: they exist to prove the generator reproduces t
 | `chapbook_skill/scripts/build_map.py` | Render a map spec on its own, with a reproducibility record |
 | `chapbook_skill/scripts/build_chapbook.py` | Render a full booklet spec |
 | `chapbook_skill/scripts/fetch_osm.py` | Fetch and cache OpenStreetMap data with a hashed manifest |
+| `chapbook_skill/scripts/provenance.py` | Source and photograph records: every answer-page claim cites a source id, every image a licence record |
+| `chapbook_skill/scripts/verify_provenance.py` | Live checks before a build: source URLs fetched, Commons licences and authors compared, image files hashed |
+| `chapbook_skill/scripts/riddles.py` | Riddle review: rubric, locating scan on hints, cold-solver report |
+| `chapbook_skill/scripts/riddle_pages.py` | Prints the cold-solver packet (riddle pages and map text only) and its report skeleton |
 | `chapbook_skill/templates/` | Example booklet spec and example map spec |
 | `chapbook_skill/assets/fonts/` | Six OFL-licensed fonts (Cormorant, EB Garamond, Source Serif 4) |
 | `map_tests/` | Three map fixtures with cached data, plus `check_failures.py` |
@@ -41,6 +45,14 @@ The map lets a player get their bearings between stops; a map app handles turn-b
 8. **Every build writes a record.** `<name>_record.json` captures the generator version, spec and code hashes, data manifest check, route legs, page plan, landmarks tried and chosen, label report, warnings, and the checks that were and were not performed.
 
 An optional café break marks one to three real, named places near the halfway leg, outside every circle. It is never a riddle stop.
+
+## How the booklet checks itself
+
+1. **Sources are records, not footnotes.** Each source and photograph in a spec is a record with its URL, the date it was read, what was verified and, for images, the licence and author. Every answer-page paragraph, block and notice cites at least one source id; the build stops if one does not.
+2. **Checks run live before the build.** `verify_provenance.py` fetches each source URL, compares Commons licence and author against the record, and hashes the image files; the build reads that report and blocks on a failure unless the record carries a reason.
+3. **Riddles are reviewed before rendering.** Each riddle carries its observable evidence, the action the reader performs, a decoy and an optional hint. A rubric is recorded pass or fail per item; a scan rejects hints that locate (street corners, addresses, "across from"); and a cold solver who has seen only the riddle pages and map text tries to name each stop. A stop named from its hint alone blocks.
+4. **The map marks the start, never the finish.** The start is a named street corner the engine picks outside every circle; the last stop ends the walk.
+5. **Overrides are printed.** Any waived check is recorded in the build record with its reason.
 
 ## Examples
 

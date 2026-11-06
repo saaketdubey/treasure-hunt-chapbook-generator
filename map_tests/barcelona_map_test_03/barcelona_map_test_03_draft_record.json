@@ -5,13 +5,13 @@
     "sha256": "03ba84e9bea2f6a1131fd6fb7635512122fdc03b5a0c08f3a9793054f540ef9b"
   },
   "code": {
-    "engine.py": "3c4862e4b6adec948d42f15ef523c4866fd8d5f86f5049e4459fb19cfa317aa4",
-    "mapgen.py": "8b6948ff8378b1c52ac19e1191d7ba331ae2ee8b9fa41cf7526745829748afd9",
+    "engine.py": "edfa05a689f27461d766cc85728b9c50cd976e277fe9eb08c9e422fdf98ea9aa",
+    "mapgen.py": "0c59f92b71e10c4de8c74c473a3da3d434e7bf567183edbb95c144dedd96a1aa",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "barcelona_map_test_03_draft.pdf",
-    "sha256": "9041884155faf6c1e4d743a0fb37e2b678138677671f12f39dc8d8d3e2692242"
+    "sha256": "8fab4b93fb6a6255a773b31435749dcafc1e092f68ea6bad4c0df8c9037e3bd6"
   },
   "status": "draft — pending author review",
   "report": {
@@ -37,24 +37,15 @@
       "route: leg 7→8 crosses crossing way with unknown crossing data; check on site",
       "route: leg 7→8 crosses crossing way with unknown crossing data; check on site",
       "route: leg 7→8 crosses crossing way with unknown crossing data; check on site",
-      "circle 5 grown from 130 ft to 140 ft so it reads at this page's scale",
-      "circle 6 grown from 130 ft to 140 ft so it reads at this page's scale",
-      "circle 7 grown from 130 ft to 400 ft so it reads at this page's scale",
-      "circle 8 grown from 130 ft to 400 ft so it reads at this page's scale",
-      "page 3: label: area name 7 could not float onto its circle; placed beside it"
+      "circle 5 grown from 130 ft to 382 ft so it reads at this page's scale",
+      "circle 6 grown from 130 ft to 382 ft so it reads at this page's scale",
+      "circle 7 grown from 130 ft to 382 ft so it reads at this page's scale",
+      "circle 8 grown from 130 ft to 348 ft so it reads at this page's scale",
+      "page 1: label: area name 2 could not float onto its circle; placed beside it",
+      "page 2: label: area name 6 could not float onto its circle; placed beside it"
     ],
     "labels": {
       "placed": [
-        {
-          "kind": "zone",
-          "text": "THE DRAGON'S / BACK",
-          "size_pt": 6.5
-        },
-        {
-          "kind": "landmark",
-          "text": "CASA LLEÓ / MORERA",
-          "size_pt": 6.0
-        },
         {
           "kind": "zone",
           "text": "THE UNFINISHED / ONE",
@@ -63,21 +54,6 @@
         {
           "kind": "landmark",
           "text": "CARRER DE / LA MARINA",
-          "size_pt": 6.0
-        },
-        {
-          "kind": "cafe",
-          "text": "HERE BUBBLE TEA",
-          "size_pt": 6.0
-        },
-        {
-          "kind": "cafe",
-          "text": "Bingbing Cafe",
-          "size_pt": 6.0
-        },
-        {
-          "kind": "cafe",
-          "text": "Syra Coffee",
           "size_pt": 6.0
         }
       ],
@@ -93,8 +69,10 @@
       "hunt areas contain targets, are off-centre, do not overlap",
       "route-note figures derived from the solved route",
       "landmark candidates screened: stop targets, features holding a target, and every stop's secret terms",
+      "start corner outside every circle and clear of secret terms",
       "every circle has a landmark within 500 ft of its edge",
-      "map title, notes and zone labels scanned for every stop's secret terms"
+      "map title, notes and zone labels scanned for every stop's secret terms",
+      "start corner outside every circle and clear of secret terms"
     ],
     "unperformed_checks": [
       "human review of rendered geography against read sources",
@@ -773,14 +751,6 @@
       "after_stop": 6,
       "candidates": [
         {
-          "name": "HERE BUBBLE TEA",
-          "osm": "node/14056026502",
-          "url": "https://www.openstreetmap.org/node/14056026502",
-          "kind": "amenity=cafe",
-          "ft_from_route": 15,
-          "opening_hours": "Mo-Su 12:30-21:30"
-        },
-        {
           "name": "Bingbing Cafe",
           "osm": "node/6333736423",
           "url": "https://www.openstreetmap.org/node/6333736423",
@@ -797,19 +767,19 @@
           "opening_hours": "Mo-Sa 08:00-20:00"
         },
         {
+          "name": "Tasmango Dessert",
+          "osm": "node/5237627856",
+          "url": "https://www.openstreetmap.org/node/5237627856",
+          "kind": "amenity=cafe",
+          "ft_from_route": 19,
+          "opening_hours": null
+        },
+        {
           "name": "Vivari",
           "osm": "node/9241043556",
           "url": "https://www.openstreetmap.org/node/9241043556",
           "kind": "amenity=cafe",
           "ft_from_route": 21,
-          "opening_hours": null
-        },
-        {
-          "name": "Trole",
-          "osm": "node/9699791022",
-          "url": "https://www.openstreetmap.org/node/9699791022",
-          "kind": "amenity=cafe",
-          "ft_from_route": 25,
           "opening_hours": null
         },
         {
@@ -819,8 +789,25 @@
           "kind": "amenity=cafe",
           "ft_from_route": 29,
           "opening_hours": null
+        },
+        {
+          "name": "Urquinaona",
+          "osm": "node/5951979986",
+          "url": "https://www.openstreetmap.org/node/5951979986",
+          "kind": "amenity=cafe",
+          "ft_from_route": 32,
+          "opening_hours": null
         }
       ]
+    },
+    "start": {
+      "osm": "node/240882893",
+      "names": [
+        "Carrer de la Bòria",
+        "Via Laietana"
+      ],
+      "caption": "Start: Carrer de la Bòria and Via Laietana",
+      "ft_from_edge": 466
     },
     "landmark_reach": [
       {
@@ -880,27 +867,27 @@
         {
           "stops": [
             5,
-            6
+            7
           ],
           "carry_in": 4,
-          "scale_pt_per_m": 0.365,
-          "needed_pt_per_m": 0.356,
+          "scale_pt_per_m": 0.133,
+          "needed_pt_per_m": 0.131,
           "circles_grown_ft": {
-            "5": 140,
-            "6": 140
+            "5": 382,
+            "6": 382,
+            "7": 382
           }
         },
         {
           "stops": [
-            7,
+            8,
             8
           ],
-          "carry_in": 6,
-          "scale_pt_per_m": 0.126,
-          "needed_pt_per_m": 0.125,
+          "carry_in": 7,
+          "scale_pt_per_m": 0.147,
+          "needed_pt_per_m": 0.143,
           "circles_grown_ft": {
-            "7": 400,
-            "8": 400
+            "8": 348
           }
         }
       ]
@@ -917,37 +904,12 @@
           "placed": [
             {
               "kind": "zone",
-              "text": "THE DRAGON'S / BACK",
-              "size_pt": 6.5
-            },
-            {
-              "kind": "landmark",
-              "text": "CASA LLEÓ / MORERA",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "zone",
               "text": "THE UNFINISHED / ONE",
               "size_pt": 6.5
             },
             {
               "kind": "landmark",
               "text": "CARRER DE / LA MARINA",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "HERE BUBBLE TEA",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "Bingbing Cafe",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "Syra Coffee",
               "size_pt": 6.0
             }
           ],
@@ -958,15 +920,15 @@
           "points_per_metre": 0.4978,
           "extent_m": [
             653,
-            651
+            629
           ],
           "ratio_at_print": "1:5,694"
         },
         "furniture": {
           "scale_and_north": "top left, side by side"
         },
-        "landmark_sets_tried": 2,
-        "search_nodes": 53,
+        "landmark_sets_tried": 3,
+        "search_nodes": 62,
         "landmarks_chosen": [
           {
             "circle": 1,
@@ -985,10 +947,10 @@
           },
           {
             "circle": 2,
-            "landmark": "Casa Cambó",
-            "osm": "way/818493042",
-            "ft_from_edge": 114,
-            "score": 3.54,
+            "landmark": "Palau Requesens",
+            "osm": "relation/19844467",
+            "ft_from_edge": 217,
+            "score": 3.14,
             "ranked_alternatives": [
               "Museu Frederic Marès",
               "Casa Cambó",
@@ -1015,17 +977,17 @@
           },
           {
             "circle": 4,
-            "landmark": "Palau Dou",
-            "osm": "way/385569196",
-            "ft_from_edge": 341,
-            "score": 3.03,
+            "landmark": "Casa Cambó",
+            "osm": "way/818493042",
+            "ft_from_edge": 292,
+            "score": 3.18,
             "ranked_alternatives": [
               "Casa Cambó",
-              "Palau Dou",
               "Avinguda de Francesc Cambó",
               "Plaça de Joan Capri",
               "Plaça de Sant Cugat",
-              "Carrer de Gombau"
+              "Carrer de Gombau",
+              "Via Laietana"
             ]
           }
         ]
@@ -1040,16 +1002,6 @@
           "placed": [
             {
               "kind": "zone",
-              "text": "THE DRAGON'S / BACK",
-              "size_pt": 6.5
-            },
-            {
-              "kind": "landmark",
-              "text": "CASA LLEÓ / MORERA",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "zone",
               "text": "THE UNFINISHED / ONE",
               "size_pt": 6.5
             },
@@ -1057,39 +1009,29 @@
               "kind": "landmark",
               "text": "CARRER DE / LA MARINA",
               "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "HERE BUBBLE TEA",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "Bingbing Cafe",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "Syra Coffee",
-              "size_pt": 6.0
             }
           ],
           "dropped": [],
           "suppressed": []
         },
         "scale": {
-          "points_per_metre": 0.3645,
+          "points_per_metre": 0.1328,
           "extent_m": [
-            892,
-            933
+            2448,
+            2388
           ],
-          "ratio_at_print": "1:7,776"
+          "ratio_at_print": "1:21,346"
         },
         "furniture": {
-          "scale_and_north": "top left, side by side"
+          "scale_and_north": "bottom right, side by side"
         },
         "landmark_sets_tried": 1,
-        "search_nodes": 16,
+        "search_nodes": 90,
+        "cafes_shown": [
+          "Bingbing Cafe",
+          "Syra Coffee",
+          "Vivari"
+        ],
         "landmarks_chosen": [
           {
             "circle": 5,
@@ -1101,9 +1043,9 @@
               "Passeig de Joaquim Renart",
               "Carrer de Nàpols",
               "Passeig de Pujades",
+              "Carrer de Llull",
               "Avinguda Meridiana",
-              "Carrer de Pujades",
-              "Carrer de Wellington"
+              "Carrer de Pujades"
             ]
           },
           {
@@ -1120,6 +1062,21 @@
               "Passeig de Lluís Companys",
               "Carrer de Trafalgar"
             ]
+          },
+          {
+            "circle": 7,
+            "landmark": "Casa Lleó Morera",
+            "osm": "way/679019157",
+            "ft_from_edge": 127,
+            "score": 2.31,
+            "ranked_alternatives": [
+              "Casa Lleó Morera",
+              "Carrer d'Aragó",
+              "Passeig de Gràcia",
+              "Col·legi Lestonnac",
+              "Institut Jaume Balmes",
+              "Casa Olano"
+            ]
           }
         ]
       },
@@ -1133,16 +1090,6 @@
           "placed": [
             {
               "kind": "zone",
-              "text": "THE DRAGON'S / BACK",
-              "size_pt": 6.5
-            },
-            {
-              "kind": "landmark",
-              "text": "CASA LLEÓ / MORERA",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "zone",
               "text": "THE UNFINISHED / ONE",
               "size_pt": 6.5
             },
@@ -1150,60 +1097,25 @@
               "kind": "landmark",
               "text": "CARRER DE / LA MARINA",
               "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "HERE BUBBLE TEA",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "Bingbing Cafe",
-              "size_pt": 6.0
-            },
-            {
-              "kind": "cafe",
-              "text": "Syra Coffee",
-              "size_pt": 6.0
             }
           ],
           "dropped": [],
           "suppressed": []
         },
         "scale": {
-          "points_per_metre": 0.1335,
+          "points_per_metre": 0.1747,
           "extent_m": [
-            2435,
-            2165
+            1861,
+            1788
           ],
-          "ratio_at_print": "1:21,228"
+          "ratio_at_print": "1:16,227"
         },
         "furniture": {
           "scale_and_north": "top left, side by side"
         },
         "landmark_sets_tried": 1,
-        "search_nodes": 43,
-        "cafes_shown": [
-          "HERE BUBBLE TEA",
-          "Bingbing Cafe",
-          "Syra Coffee"
-        ],
+        "search_nodes": 13,
         "landmarks_chosen": [
-          {
-            "circle": 7,
-            "landmark": "Casa Lleó Morera",
-            "osm": "way/679019157",
-            "ft_from_edge": 127,
-            "score": 2.31,
-            "ranked_alternatives": [
-              "Casa Lleó Morera",
-              "Carrer d'Aragó",
-              "Rambla de Catalunya",
-              "Passeig de Gràcia",
-              "Col·legi Lestonnac",
-              "Institut Jaume Balmes"
-            ]
-          },
           {
             "circle": 8,
             "landmark": "Carrer de la Marina",
@@ -1215,8 +1127,8 @@
               "Carrer de Sardenya",
               "Carrer de Mallorca",
               "Carrer de Provença",
-              "Jardins interior d'illa",
-              "Jardins de les Treballadores de Numax"
+              "Carrer del Rosselló",
+              "Jardins interior d'illa"
             ]
           }
         ]

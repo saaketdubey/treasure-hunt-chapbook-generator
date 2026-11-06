@@ -28,6 +28,10 @@ At the end you'll get a PDF booklet to print or read on your phone, with a trail
    walking (no steep climbs or stairs) · Kid-friendly (riddles children can solve) · Café stop (a
    place to eat or drink along the way).
 
+Kid-friendly is the book's one difficulty setting: it sets `kid_friendly: True` in the spec and
+changes how riddles are written and reviewed (`references/craft.md`, Riddles). Nothing else in the
+interview sets difficulty; unset, riddles are written to one adult standard.
+
 A blank answer to question 4 means no constraints. Defaults that apply without asking: one ticketed
 or hours-limited finale is allowed, placed last, unless Free and outdoor is ticked; every route
 avoids queues and peak-crowd bottlenecks.
@@ -75,9 +79,12 @@ propose the closest thread that does.
 
 ## Sourcing and honesty
 
-Every fact in the answer pages must come from a source you fetched, and `credits.sources` must list it
-with a full URL and what it supports. Photographs must be freely licensed files with author and
-licence named on the answer page and in the credits.
+Every fact in the answer pages must come from a source you fetched and read, recorded in `sources`
+with a full URL, the date read and what it supports, and cited by id from the claim that uses it.
+Photographs must be freely licensed files from Wikimedia Commons, recorded in `images` with author
+and licence as the file page states them. The credits page is generated from those records.
 
-When the sources support a weaker claim than the appealing story, write the weaker claim and say so in
-the answer text. One honest caveat is worth more than a confident invention.
+When the sources support a weaker claim than the appealing story, write the weaker claim in the
+answer text and put the conflict in that source's `weaker_claim` field: what the other accounts say
+and what the book therefore states. It prints in the credits, so the reader can see the seam. One
+honest caveat is worth more than a confident invention.

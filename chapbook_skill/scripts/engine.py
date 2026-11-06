@@ -15,6 +15,10 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.utils import ImageReader
 
+from provenance import text_of, block_parts
+import provenance
+import riddles
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 # Asset roots. FONT_DIR ships with the skill; IMG_DIR is the working project
 # directory and is overridden by build_chapbook.py.
@@ -57,6 +61,7 @@ class Book:
         self.p = {k: HexColor(v) for k, v in spec["palette"].items()}
         self.display = spec.get("display_font", "Cormorant")
         self.display_i = self.display + "-Italic"
+        self.out_path = out_path
         self.c = rl_canvas.Canvas(out_path, pagesize=(PW, PH))
         self.c.setTitle(spec["title_line1"] + ": " + spec["subtitle"])
         self.c.setAuthor(spec.get("author", "Chapbook Engine"))
@@ -485,6 +490,8 @@ class Book:
         # legend: only what is drawn, measured, never shrunk
         ly = y0 - 14
         items = [("route", "Walking route"), ("area", "Numbered stop"), ("bldg", "Landmark")]
+        if first and getattr(model, "start", None):
+            items.insert(0, ("start", "Start"))
         if cafes:
             items.append(("cafe", "Café break"))
         widths = [16 + self.text_width(t, "Body", 6.6) + 10 for _, t in items]
@@ -504,6 +511,8 @@ class Book:
                 c.setDash(); c.setFillColor(self.p["accent"]); c.circle(xx + 6, cy, 3.4, stroke=0, fill=1)
             elif kind == "cafe":
                 mapgen._cafe_symbol(c, xx + 6, cy, self.p["accent2"], tint(self.p["paper"], 0.2))
+            elif kind == "start":
+                mapgen._start_symbol(c, xx + 6, cy, self.p["accent"], tint(self.p["paper"], 0.2))
             else:
                 c.setFillColor(tint(self.p["gold"], 0.70)); c.rect(xx + 1, cy - 3.5, 10, 7, stroke=0, fill=1)
             self.left(xx + 16, ly, label, "Body", 6.6, self.p["accent2"])
@@ -526,6 +535,9 @@ class Book:
             y = self.para(M, y, f"The walk continues from stop {carry}.", "Body", 8.2, PW - 2 * M, 11.6,
                           self.p["accent"], align="center") - 15
         if first:
+            if getattr(model, "start", None):
+                y = self.para(M, y, model.start["caption"], "Body", 8.2, PW - 2 * M, 11.6,
+                              self.p["accent"], align="center") - 11
             y = self.para(M, y, model.notes["route_note"], "Body", 8.2, PW - 2 * M, 11.6,
                           self.p["accent"], align="center") - 15
         if last:
@@ -565,7 +577,7 @@ class Book:
                       cy - 2.6, act["numeral"], "Body", 7.4, self.p["accent2"])
             self.left(x + 40, y, act["name"], self.display, 16.5, self.p["accent"])
             y -= 21
-            y = self.para(x + 40, y, act["text"], "Body", 9.1, W - 42, 13) - 15
+            y = self.para(x + 40, y, text_of(act["text"]), "Body", 9.1, W - 42, 13) - 15
             if i < len(a["items"]) - 1:
                 c.setStrokeColor(tint(self.p["gold"], 0.3))
                 c.setLineWidth(0.5)
@@ -609,13 +621,14 @@ class Book:
         y = self.para(x, y, mk["standfirst"], self.display_i, 12.4, W, 16,
                       self.p["accent2"], align="center") - 17
         for p in mk["paras"]:
-            y = self.para(x, y, p, "Body", 9.3, W, 13.4, align="justify") - 14
+            y = self.para(x, y, text_of(p), "Body", 9.3, W, 13.4, align="justify") - 14
         y -= 6
         self.diamond_rule(y + 4, half=56)
         y -= 20
         y = self.section_label(x, y, mk["facts_title"])
         c = self.c
-        for label, val in mk["facts"]:
+        for fact in mk["facts"]:
+            label, val = fact[0], fact[1]
             self.left(x + 4, y, label, "Body", 8.4, self.p["accent"])
             lw = self.text_width(label, "Body", 8.4)
             c.setStrokeColor(tint(self.p["gold"], 0.45))
@@ -681,7 +694,7 @@ class Book:
         self.left(bx + 18, by, "FOUND IT?", "Body", 8, self.p["accent2"], tracking=2.2)
         # hint well
         hy = M + 62
-        htxt = r["hint"]
+        htxt = text_of(r["hint"])
         hh = self.para_height(htxt, "Body", 8.4, PW - 2 * M - 40, 11.6)
         c.setFillColor(tint(self.p["accent2"], 0.92))
         c.setStrokeColor(tint(self.p["accent2"], 0.5))
@@ -877,7 +890,10 @@ class Book:
         img = os.path.join(IMG_DIR, a["image"])
         ir = ImageReader(img)
         w0, h0 = ir.getSize()
-        nt = a["notice"]
+        nt = block_parts(a["notice"])
+        credit = provenance.credit_line(provenance.image_record_for(self.s, a["image"]))
+        paras = [text_of(p) for p in a["paras"]]
+        blocks = [block_parts(b)[:2] for b in a["blocks"]]
         W = PW - 2 * M
         avail = y - (M + 16)
 
@@ -888,11 +904,11 @@ class Book:
                 ih = maxh
                 iw = ih * w0 / h0
             t = ih + 11
-            t += self.para_height(a["credit"], "Body", 5.9, W - 28, 8.2) + 12
-            for p in a["paras"]:
+            t += self.para_height(credit, "Body", 5.9, W - 28, 8.2) + 12
+            for p in paras:
                 t += self.para_height(p, "Body", 8.7 * sc, W, 12.3 * sc) + 11 * sc
             t += 8
-            for label, txt in a["blocks"]:
+            for label, txt in blocks:
                 t += 11.4 * sc + self.para_height(txt, "Body", 8.3 * sc, W - 14,
                                                   11.4 * sc) + 12 * sc
             t += 22
@@ -923,16 +939,16 @@ class Book:
         c.setLineWidth(0.6)
         c.rect(ix, y - ih, iw, ih, stroke=1, fill=0)
         y = y - ih - 11
-        y = self.para(M + 14, y, a["credit"], "Body", 5.9, W - 28, 8.2,
+        y = self.para(M + 14, y, credit, "Body", 5.9, W - 28, 8.2,
                       self.p["accent2"], align="center") - 12
-        for p in a["paras"]:
+        for p in paras:
             y = self.para(M, y, p, "Body", 8.7 * sc, W, 12.3 * sc, align="justify") - 11 * sc
         y -= 2
         c.setStrokeColor(tint(self.p["gold"], 0.45))
         c.setLineWidth(0.5)
         c.line(M, y + 8, PW - M, y + 8)
         y -= 6
-        for label, txt in a["blocks"]:
+        for label, txt in blocks:
             c.setFillColor(self.p["gold"])
             c.saveState()
             c.translate(M + 3, y + 2.6)
@@ -989,21 +1005,39 @@ class Book:
         self.page_break()
 
     def credits(self):
+        """Sources and credits, generated from the provenance records. Flows onto
+        continuation pages when the records need more than one page."""
         cr = self.s["credits"]
+        x, W = M, PW - 2 * M
+        floor = M + 8             # lowest baseline before a continuation page (folio sits below)
         self.background()
         self.frame()
         y = self.page_head("Sources and credits", cr["title_lines"], title_size=20)
-        x, W = M, PW - 2 * M
         y = self.para(x, y, cr["intro"], "Body", 8.4, W, 11.8, align="justify") - 16
-        y = self.section_label(x, y, "Photographs")
-        for line in cr["images"]:
-            y = self.para(x + 6, y, line, "Body", 6.9, W - 8, 9.4,
-                          self.p["ink"], first_indent=0) - 7
-        y -= 8
-        y = self.section_label(x, y, "Written sources")
-        for line in cr["sources"]:
-            y = self.para(x + 6, y, line, "Body", 6.9, W - 8, 9.4, self.p["ink"]) - 7
-        y -= 10
+
+        def ensure(h):
+            nonlocal y
+            if y - h < floor:
+                self.page_break()
+                self.background()
+                self.frame()
+                y = self.page_head("Sources and credits", ["Continued"], title_size=20)
+
+        for label, lines in (("Photographs", provenance.credits_image_lines(self.s)),
+                             ("Written sources", provenance.credits_source_lines(self.s))):
+            if not lines:
+                continue
+            first_h = self.para_height(lines[0], "Body", 6.9, W - 8, 9.4)
+            ensure(13 + first_h)
+            y = self.section_label(x, y, label)
+            for line in lines:
+                h = self.para_height(line, "Body", 6.9, W - 8, 9.4)
+                ensure(h)
+                y = self.para(x + 6, y, line, "Body", 6.9, W - 8, 9.4, self.p["ink"]) - 9.4 - 4.5
+            y -= 6
+        col_h = self.para_height(cr["colophon"], self.display_i, 10.4, W - 20, 13.4)
+        ensure(col_h + 34)
+        y -= 4
         self.diamond_rule(y + 4, half=52)
         y -= 20
         self.para(x + 10, y, cr["colophon"], self.display_i, 10.4, W - 20, 13.4,
@@ -1023,6 +1057,28 @@ class Book:
     def build(self):
         s = self.s
         n = len(s["stops"])
+        # ---- provenance (schema v3): validate before anything is drawn --------
+        p_errors, p_warnings, ledger = provenance.validate(s, SPEC_DIR, IMG_DIR)
+        l_errors, l_warnings, live = provenance.load_live_checks(s, SPEC_DIR)
+        p_errors += l_errors
+        p_warnings += l_warnings
+        for w in p_warnings:
+            print(f"  !! provenance warning: {w}")
+        if p_errors:
+            provenance.build_record(s, getattr(self, "spec_path", ""), self.out_path, ledger,
+                                    p_warnings, live, errors=p_errors)
+            raise provenance.ProvenanceError("provenance check failed:\n  " + "\n  ".join(p_errors))
+        # ---- riddle review (block D): fields, hint rule, rubric, cold solver -----
+        r_errors, r_warnings, r_report = riddles.validate(s, SPEC_DIR)
+        for w in r_warnings:
+            print(f"  !! riddle warning: {w}")
+        if r_errors:
+            provenance.build_record(s, getattr(self, "spec_path", ""), self.out_path, ledger,
+                                    p_warnings + r_warnings, live, errors=r_errors,
+                                    riddles=riddles.record_section(r_report))
+            raise riddles.RiddleError("riddle review failed:\n  " + "\n  ".join(r_errors))
+        self._prov = (ledger, p_warnings + r_warnings, live)
+        self._riddles = riddles.record_section(r_report)
         if s.get("map", {}).get("version") == 2:
             import mapgen
             if len(s["map"]["stops"]) != n:
@@ -1049,4 +1105,8 @@ class Book:
         while self.page_no % 4 != 0:
             self.blank_with_ornament(s.get("blank_label", "Notes"))
         self.c.save()
+        ledger, warns, live = self._prov
+        rec = provenance.build_record(s, getattr(self, "spec_path", ""), self.out_path, ledger,
+                                      warns, live, riddles=self._riddles)
+        print(f"record: {rec}")
         return self.page_no

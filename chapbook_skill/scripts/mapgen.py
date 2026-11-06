@@ -100,6 +100,10 @@ CAFE_KINDS = {("amenity", "cafe"): 3.0, ("shop", "bakery"): 2.5, ("shop", "pastr
 CAFE_DETOUR_M = (75.0, 150.0)  # off-route distance tried: about 250 ft, then 500 ft
 CAFE_PICKS = 3
 CAFE_R = 3.6                  # café symbol radius, points
+# start marker: a named street corner, picked automatically, outside every circle
+START_REACH_M = 500 * FT      # the corner must be within this of circle 1's edge
+START_R = 4.2                 # start symbol radius, points
+START_CLEAR_M = 30.0          # the corner stays this far outside every circle's dotted edge
 CAFE_SPACING_M = 40.0
 LANDMARK_MIN_AREA_M2 = 150.0
 LANDMARK_CANDIDATES_PER_CIRCLE = 6
@@ -650,6 +654,7 @@ class MapModel:
             if faint:
                 rep.setdefault("faint_landmarks", []).append(lm["label"].replace("|", " "))
         self.cafes = self._cafe_break() if map_spec.get("cafe_break") else []
+        self.start = self._start_point()
         self.street_label_list = map_spec.get("street_labels")
         for j, (cx, cy, r) in enumerate(self.areas, 1):
             if self.group[j - 1] != j - 1:
@@ -771,6 +776,58 @@ class MapModel:
         rep["automated_checks"].append("landmark candidates screened: stop targets, features holding a "
                                        "target, and every stop's secret terms")
         return out
+
+    def _start_point(self):
+        """Where the walk begins: a named street corner near circle 1 that lies outside every
+        circle, inside the route's padded extent, and carries no stop's secret terms. Corners
+        of two main streets rank first, then the nearest. Picked from the map data; a marker
+        and a caption, never a leg."""
+        rep = self.report
+        stops = self.m["stops"]
+        secrets = [stop_terms(st) for st in stops]
+        circles = [Point(cx, cy).buffer(r + START_CLEAR_M) for cx, cy, r in self.areas]
+        c1 = Point(self.areas[0][0], self.areas[0][1]).buffer(self.areas[0][2])
+        pts = [p for L in self.legs for p in L["xy"]]
+        for cx, cy, r in self.areas:
+            pts += [(cx - r, cy - r), (cx + r, cy + r)]
+        xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+        padx, pady = (max(xs) - min(xs)) * PANEL_PAD, (max(ys) - min(ys)) * PANEL_PAD
+        frame = sbox(min(xs) - padx, min(ys) - pady, max(xs) + padx, max(ys) + pady)
+        at_node = {}
+        for wid, (refs, t) in self.ways.items():
+            cls = street_class(t)
+            if cls not in ("major", "minor") or t.get("highway") == "service" or not t.get("name"):
+                continue
+            for nid in refs:
+                if nid in self.nodes:
+                    at_node.setdefault(nid, {})[t["name"]] = cls
+        cands = []
+        for nid, names in at_node.items():
+            if len(names) < 2:
+                continue
+            xy = self.P(*self.nodes[nid][:2])
+            pt = Point(xy)
+            if not frame.contains(pt) or any(c.contains(pt) for c in circles):
+                continue
+            if any(term_hits(n, terms) for n in names for terms in secrets):
+                continue
+            d = c1.distance(pt)
+            if d > START_REACH_M:
+                continue
+            major = sum(1 for c in names.values() if c == "major")
+            cands.append((-major, d, nid, sorted(names)))    # main-street corners first, then nearest
+        if not cands:
+            rep["errors"].append(f"start: no named street corner outside the circles within "
+                                 f"{START_REACH_M / FT:.0f} ft of circle 1 inside the map frame")
+            return None
+        cands.sort()
+        _, d, nid, names = cands[0]
+        corner = " and ".join(names[:2])
+        start = {"osm": f"node/{nid}", "xy": self.P(*self.nodes[nid][:2]), "names": names[:2],
+                 "caption": f"Start: {corner}", "ft_from_edge": round(d / FT)}
+        rep["start"] = {k: v for k, v in start.items() if k != "xy"}
+        rep["automated_checks"].append("start corner outside every circle and clear of secret terms")
+        return start
 
     def _cafe_break(self):
         """Up to three real, named places to eat or drink, a short detour off the leg that
@@ -1107,8 +1164,8 @@ class MapModel:
             for g, r in sorted(p["radii"].items()):
                 rep["warnings"].append(f"circle {g + 1} grown from {self.areas[g][2] / FT:.0f} ft to "
                                        f"{r / FT:.0f} ft so it reads at this page's scale")
-        if any(p["radii"] for p in plan) and self.m.get("cafe_break"):
-            # pick the café break again against the circles as they will print
+        if any(p["radii"] for p in plan):
+            # pick the café break and the start again against the circles as they will print
             orig = self.areas
             grown = list(orig)
             for p in plan:
@@ -1117,7 +1174,13 @@ class MapModel:
                         grown[k] = self._grown_area(self.group[k], p["radii"][self.group[k]])
             self.areas = grown
             try:
-                self.cafes = self._cafe_break()
+                if self.m.get("cafe_break"):
+                    self.cafes = self._cafe_break()
+                before = self.start
+                self.start = self._start_point()
+                if before and self.start and before["osm"] != self.start["osm"]:
+                    rep["warnings"].append(f"start moved to {self.start['caption'][7:]} once circles grew; "
+                                           f"the cold-solver packet must be printed again")
             finally:
                 self.areas = orig
         if margin >= 1.0:
@@ -1159,6 +1222,7 @@ class MapModel:
                     for L in self.legs if L["from"] - 1 in local and L["to"] - 1 in local]
         # the café break sits beside the leg after its stop: it goes on the page drawing that leg
         sub.cafes = [c for c in self.cafes if (c["after_stop"] - 1) in local and c["after_stop"] in local]
+        sub.start = self.start if 0 in local and 0 not in sub.ghosts else None
         sub.landmark_pool = [dict(c, dists={local[g]: d for g, d in c["dists"].items() if g in local})
                              for c in self.landmark_pool]
         sub.report = {"errors": [], "warnings": [], "automated_checks": [], "labels": self.report.get("labels")}
@@ -1700,6 +1764,19 @@ class Layout:
                     a.buffer(CAFE_R + 2).contains(Point(x, y)) for a in self.area_shapes):
                 self.cafe_marks.append((x, y, c))
         self.furniture = self.furniture + [Point(x, y).buffer(CAFE_R + 1.2) for x, y, _ in self.cafe_marks]
+        # start marker: reserved first, its label required
+        self.start_mark = None
+        if getattr(mm, "start", None):
+            x, y = self.T(*mm.start["xy"])
+            if not inner.contains(Point(x, y)):
+                rep["errors"].append("start: the start corner falls off the plate")
+            elif any(a.buffer(START_R).intersects(Point(x, y)) for a in self.area_shapes):
+                rep["errors"].append("start: the start corner sits inside a circle as printed")
+            else:
+                self.start_mark = (x, y)
+                self.furniture = self.furniture + [Point(x, y).buffer(START_R + 1.2)]
+                items.append({"what": "start label", "required": True, "start": True,
+                              "options": self._point_options(x, y, "Start", "start")})
         for x, y, c in self.cafe_marks[:CAFE_PICKS * 2]:
             items.append({"what": f"café '{c['name']}'", "required": False, "cafe": c,
                           "options": self._point_options(x, y, c["name"], "cafe")})
@@ -2196,6 +2273,8 @@ def draw(book, lay):
         for x, y, cc in lay.cafe_marks:
             if cc is c_:
                 _cafe_symbol(c, x, y, p["accent2"], tint(p["paper"], 0.2))
+    if getattr(lay, "start_mark", None):
+        _start_symbol(c, *lay.start_mark, p["accent"], tint(p["paper"], 0.2))
     for i, (mx, my) in enumerate(lay.area_centres, 1):
         c.setFillColor(p["accent"])
         c.setStrokeColor(tint(p["paper"], 0.2))
@@ -2209,7 +2288,7 @@ def draw(book, lay):
         col = {"zone": p["accent"], "water": p["accent2"], "park": p["accent2"],
                "street": p["ink"], "landmark": tint(p["ink"], 0.45),
                "landmark_faint": tint(p["ink"], 0.58), "road_anchor": tint(p["ink"], 0.35),
-               "cafe": p["accent2"]}[lab["kind"]]
+               "cafe": p["accent2"], "start": p["accent"]}[lab["kind"]]
         _label(book, lab, col, tint(p["paper"], 0.55))
     # furniture
     _north(c, lay.north, p["accent2"])
@@ -2221,6 +2300,17 @@ def draw(book, lay):
     c.setStrokeColor(tint(p["accent2"], 0.4))
     c.setLineWidth(0.7)
     c.rect(x0, y0, w, h, stroke=1, fill=0)
+
+
+def _start_symbol(c, x, y, col, ring):
+    """A hollow disc with an S: where the walk begins. Not a stop, so not a filled disc."""
+    c.setFillColor(ring)
+    c.setStrokeColor(col)
+    c.setLineWidth(1.1)
+    c.circle(x, y, START_R, stroke=1, fill=1)
+    c.setFillColor(col)
+    c.setFont("Body", 6.4)
+    c.drawCentredString(x, y - 2.2, "S")
 
 
 def _cafe_symbol(c, x, y, col, ring):
@@ -2377,7 +2467,8 @@ def pre_divider_texts(spec):
                 walk(f"{where}[{k}]", x)
         elif isinstance(v, dict):
             for k, x in v.items():
-                if k in ("target", "view_from", "secret_terms", "answer_name", "data", "labels"):
+                if k in ("target", "view_from", "secret_terms", "answer_name", "data", "labels",
+                         "sources", "evidence", "action", "decoy", "review"):   # not printed
                     continue
                 walk(f"{where}.{k}", x)
 

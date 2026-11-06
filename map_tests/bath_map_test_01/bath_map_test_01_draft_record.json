@@ -5,13 +5,13 @@
     "sha256": "75c3890a3b478da6d744a9f7cafc0d5ef620e725f3b7c5db29d1733d9bd960d2"
   },
   "code": {
-    "engine.py": "3c4862e4b6adec948d42f15ef523c4866fd8d5f86f5049e4459fb19cfa317aa4",
-    "mapgen.py": "8b6948ff8378b1c52ac19e1191d7ba331ae2ee8b9fa41cf7526745829748afd9",
+    "engine.py": "edfa05a689f27461d766cc85728b9c50cd976e277fe9eb08c9e422fdf98ea9aa",
+    "mapgen.py": "0c59f92b71e10c4de8c74c473a3da3d434e7bf567183edbb95c144dedd96a1aa",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "bath_map_test_01_draft.pdf",
-    "sha256": "c8af3e29fb2edf46c2f5c3022f2b8bf7176eb6d2f47c5cb977afe062fa1b1849"
+    "sha256": "42464454197ec20d5b7f65e7cf3e737061fa9129e4cdbbb26af7df835027fd7f"
   },
   "status": "draft — pending author review",
   "report": {
@@ -25,7 +25,7 @@
       "placed": [
         {
           "kind": "landmark",
-          "text": "GREAT / PULTENEY STREET",
+          "text": "GREAT PULTENEY / STREET",
           "size_pt": 6.0
         },
         {
@@ -52,6 +52,11 @@
           "kind": "zone",
           "text": "ACROSS / THE RIVER",
           "size_pt": 6.5
+        },
+        {
+          "kind": "start",
+          "text": "Start",
+          "size_pt": 6.0
         },
         {
           "kind": "landmark",
@@ -90,6 +95,7 @@
       "major-road crossings listed with crossing data",
       "hunt areas contain targets, are off-centre, do not overlap",
       "route-note figures derived from the solved route",
+      "start corner outside every circle and clear of secret terms",
       "every circle has a landmark within 500 ft of its edge",
       "map title, notes and zone labels scanned for every stop's secret terms",
       "labels placed without collision against labels, markers, route, areas, furniture and plate edge",
@@ -189,6 +195,15 @@
         }
       ]
     },
+    "start": {
+      "osm": "node/333086",
+      "names": [
+        "James Street West",
+        "Saint James's Parade"
+      ],
+      "caption": "Start: James Street West and Saint James's Parade",
+      "ft_from_edge": 128
+    },
     "landmark_reach": [
       {
         "circle": 1,
@@ -232,7 +247,7 @@
       "points_per_metre": 0.541,
       "extent_m": [
         601,
-        545
+        524
       ],
       "ratio_at_print": "1:5,240"
     },
@@ -240,6 +255,6 @@
       "scale_and_north": "top left, side by side"
     },
     "landmark_sets_tried": 1,
-    "search_nodes": 182
+    "search_nodes": 159
   }
 }

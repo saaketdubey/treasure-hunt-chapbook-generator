@@ -40,7 +40,13 @@ def main():
         safe = re.sub(r"[^A-Za-z0-9]+", "-", title).strip("-")
         out = os.path.join(spec_dir, safe + ".pdf")
 
-    pages = engine.Book(SPEC, out).build()
+    book = engine.Book(SPEC, out)
+    book.spec_path = spec_path
+    try:
+        pages = book.build()
+    except (engine.provenance.ProvenanceError, engine.riddles.RiddleError) as e:
+        print(f"!! {e}")
+        return 1
     print(f"{out}: {pages} pages")
     return 0
 

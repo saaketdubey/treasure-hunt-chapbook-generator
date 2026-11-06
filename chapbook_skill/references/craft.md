@@ -12,20 +12,58 @@ optional hint are acceptable; the answer's own name is not.
 
 ## Riddles
 
-Three stanzas, in this progression:
+Three stanzas, each a list of centred lines of roughly equal length (under about 48 characters so
+they do not wrap). Stanza one places the reader without naming the place. Stanza two gives the
+observable evidence: what to count, what shape, what is carved. Stanza three gives the instruction:
+what to do or find, phrased as an action, not as the name of the thing.
 
-1. **Position** — how to get there from the previous stop, in landscape terms. "Leave the square by its
-   steepest corner and start to climb."
-2. **Evidence** — two or three concrete, checkable observations the reader will see when standing
-   there. Numbers are excellent: seven doors, five hundred emblems, a hundred and fourteen columns.
-3. **Instruction** — a short imperative couplet that says what to find without naming it. "Find the
-   circle the Elder did not live to see."
+A riddle is written from evidence, so write the evidence first. Each riddle carries four data
+fields beside its stanzas, and the stanzas are built from them:
 
-Lines run 6–11 words. Keep the register plain and slightly dry; no thee/thou, no forced rhyme. Rhyme
-only if it arrives for free.
+- `evidence` — two or more observations a reader can make on the spot, each tagged `public`
+  (visible from public ground at any hour) or `interior` (needs to be inside, allowed only where
+  the map stop's `access` is `ticketed` or `hours_limited`). Evidence is countable or pointable: a
+  number of windows, a carved animal, a missing half of a canopy, a plaque at knee height. "Georgian
+  proportions" is not evidence; "three storeys and a rusticated ground floor" is. Historical facts
+  the reader cannot see belong on the answer page, not in the riddle.
+- `action` — the one thing the reader does to finish the stop: photograph, count, read, touch,
+  stand under. It must produce the same thing the answer page names, so a reader who did the
+  action has found the answer and knows it.
+- `decoy` — the handsome, famous or obvious thing nearby that is the wrong answer: `name`, `where`
+  (relative to the circle or the route, so the reader meets it without a detour), `why_wrong`
+  (which piece of evidence it fails). A decoy that needs a walk, a ticket or an opening hour is
+  not a decoy, it is a second stop.
+- `hint` — one or two sentences; see the hint rule below.
 
-The hint is one or two prose sentences that make the answer findable without stating it, and should
-name the decoy explicitly so the reader does not waste the walk.
+Register: plain, present tense, second person. One inversion per riddle (the famous doorway that
+is the wrong house, the grand room behind the plain wall); two make it a trick, none make it a
+description. Use a tangible image per stanza and no adjectives of praise.
+
+The hint rule, two tests. A hint may add recognition: the kind of thing to look for, what to count,
+which nearby famous thing is the wrong answer. A hint may not locate: no street corner, side of a
+square, address or house number, "across from X" or "next to Y", compass direction from a named
+place, or anything else that narrows the position beyond the map circle. The circle is the only
+locator in the book. Name the decoy in the hint ("the famous crescent two minutes north is not it"
+fails the rule; "the famous crescent is the wrong answer" passes).
+
+Kid-friendly (`kid_friendly: True`, from interview question 4) is the one difficulty setting, and it
+changes four things: evidence is countable or pointable from a child's height (a carved dog at eye
+level, not a frieze four storeys up); words are plain, with any architectural or historical term
+glossed in the same line ("a keystone — the wedge at the top of the arch"); the hint names the
+decoy outright; the instruction stanza is one concrete action. Unset, riddles are written to one
+adult standard.
+
+Riddle names are the map's zone names, so they must not contain the answer, part of it, or another
+stop's answer. The build scans every printed string before the spoiler divider — cover, how to
+play, map, acts, maker, every riddle name, stanza and hint — against every stop's `answer_name`
+and `secret_terms`, and stops on a hit. The data fields (`evidence`, `action`, `decoy`, `review`)
+are not printed and are not scanned.
+
+Before rendering, each riddle passes a review (`references/spec-schema.md`, Riddle review): the
+rubric items are recorded pass or fail in the spec, and a cold solver who has seen only the riddle
+pages and map tries to name each stop (SKILL.md step 7). A riddle solved from its hint alone fails.
+A riddle solved from its evidence by inference passes and is recorded as easy: an armchair solve
+by a well-read reader is part of the pleasure, a giveaway is not.
 
 ## Answer pages
 
@@ -37,6 +75,16 @@ notice" well containing a single instruction the reader can carry out on the spo
 Numbers, spelled out in the prose where they read better, are the texture of these pages. So are
 inversions: the grandest room behind the plainest wall, the famous doorway that is the wrong house.
 
+Write each paragraph to the sources it will cite, and cite them: a paragraph is `{"text", "sources"}`
+and a block is `(heading, text, [ids])`. If a sentence has no source behind it, it is colour, not
+fact — keep it out of the answer page or find the source. Where the record holds a `weaker_claim`,
+the prose says the weaker thing plainly ("the Handbook records the tradition and says proof is
+lacking"), and may name the better source by name; that is a feature of the voice, not a hedge.
+
+Photographs: landscape frames fill the answer-page image box; a portrait photograph prints small.
+Prefer landscape, or accept the small image knowingly. Keep `modified` to one short clause; it
+prints under the photograph.
+
 ## Front and back matter
 
 - **Three acts** — the thread split into three named layers, two sentences each, naming no stop. This
@@ -45,6 +93,21 @@ inversions: the grandest room behind the plainest wall, the famous doorway that 
   a pullquote that states the method in one line.
 - **The treasure** — a first paragraph that lists the walk's concrete images in one sentence, a second
   that states what the reader now knows, then the fill-in notes fields.
+- **Start** — picked by the map engine, not written: the corner of two named streets near circle 1,
+  outside every circle, inside the map frame, carrying none of any stop's secret terms; corners of two
+  main streets rank first, then the nearest. It prints as a hollow S marker with the label "Start",
+  a legend entry, and the caption "Start: A and B" under the map, and the cold solver reads that
+  caption. No leg is drawn from it, and the map draws no finish: the last stop is where the walk
+  ends. The how-to-play notes do not give a start or finish of their own, and no note may describe a
+  stop ("stop 1 is a living tree behind a barrier"). If a stop's street would make a bad start corner,
+  add the street name to that stop's `secret_terms`.
+- **Sources and credits** — generated from the `images` and `sources` records; you write only the
+  intro and colophon. The intro says where the photographs come from and that each fact is tied to a
+  numbered source. Written sources print numbered in record order with their URL, their `supports`
+  statement and any `weaker_claim` as a "Note:", so put the sources in the order a reader would
+  want them: the stops' main sources first, practical and local pages after. Record `supports` as
+  the facts actually read, in a clause or two; it is the only place the reader sees what each
+  source carried.
 
 ## Design system
 

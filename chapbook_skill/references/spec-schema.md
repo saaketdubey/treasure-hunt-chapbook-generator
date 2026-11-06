@@ -21,6 +21,7 @@ geographic terms and `scripts/mapgen.py` derives every position.
 | `subtitle` | str | one line, used in PDF metadata |
 | `subtitle_lines` | list[str] | cover subtitle, wrapped by hand |
 | `cover_tagline_lines` | list[str] | italic couplet under the subtitle |
+| `kid_friendly` | bool | the one difficulty setting; turns on the kid rubric items (Riddle review) |
 
 ## `how_to_play`
 
@@ -106,6 +107,12 @@ What the generator does with these:
   searches landmark choices and label positions together for a clean placement with at least one
   landmark within 500 ft of every circle's edge. Different inputs can give different landmarks; the
   same inputs and data always give the same map.
+- **Start (automatic).** The corner of two named streets within 500 ft of circle 1's edge, outside every
+  circle (by 30 m), inside the route's padded extent and clear of every stop's secret terms; corners of
+  two main streets first, then the nearest. Drawn as a hollow S disc with the label "Start", a legend entry
+  and the caption "Start: A and B" on the first map page; never a leg. The report records it under
+  `start`. No corner found is an error; a corner that moves after circles grow is a warning that the
+  cold-solver packet must be printed again. There is no finish: the last stop ends the walk.
 - **Café break (`cafe_break`).** Up to three real, named cafés, bakeries, ice-cream shops or
   restaurants within about 500 ft of the leg that starts nearest halfway, outside every circle. Each is
   marked with a cup symbol and its own name, the legend gains "Café break", and the page drawing that
@@ -161,12 +168,60 @@ exactly three), `closer`.
 List of `{"riddle": {...}, "answer": {...}}`, one per stop, in walking order.
 
 `riddle`: `name` (str, no answer in it), `stanzas` (**list of list[str]** — three stanzas, each a list of
-its own centred lines, so you control every line break), `hint` (str), `ornament` (str, kind below).
+its own centred lines, so you control every line break), `hint` (str), `ornament` (str, kind below),
+and four data fields that are checked but not printed:
 
-`answer`: `name` (str), `subtitle_lines` (list[str], 2–4), `image` (filename inside `img/`),
-`credit` (str, full author and licence), `paras` (list[str], 2 paragraphs), `blocks` (list of
-`(heading, text)` tuples, 2 items), `notice` (a single `(heading, text)` tuple, rendered in the tinted
-well).
+| Field | Required | Notes |
+| --- | --- | --- |
+| `evidence` | yes, 2+ | `{"text": str, "where": "public" \| "interior"}`; `interior` only where the map stop's `access` is `ticketed` or `hours_limited` |
+| `action` | yes | the one thing the reader does to finish the stop; it must produce what the answer page names |
+| `decoy` | yes | `{"name", "where", "why_wrong"}`; inside the circle or on the route, no ticket |
+| `review` | yes | the rubric, below |
+
+The hint is scanned for locating phrases (street corner, side of a square, address or house number,
+"across from", "next to", numbered street, blocks or minutes from a place) and the build stops on a
+hit; stanzas get a warning. The circle is the only locator (craft.md, hint rule).
+
+### Riddle review
+
+`review` records the rubric, one entry per item, as `"pass"` or `{"result": "pass"|"fail",
+"note": str}` (a fail needs a note). A fail blocks the build unless `review.override` gives a
+reason, which prints and is recorded. Items:
+
+| Item | Passes when |
+| --- | --- |
+| `hint_recognition_only` | the hint adds recognition and does not locate |
+| `evidence_observable` | every evidence item can be seen at the stop's access level and hours |
+| `decoy_reachable` | the decoy is inside the circle or on the route, with no ticket or opening hour |
+| `action_matches_answer` | doing the action produces the thing the answer page names |
+| `no_shared_evidence` | no evidence item would also fit another stop's answer |
+| `kid_countable` (kid-friendly only) | evidence is countable or pointable from a child's height |
+| `kid_plain_words` (kid-friendly only) | architectural and historical terms are glossed in the same line |
+| `kid_hint_names_decoy` (kid-friendly only) | the hint names the decoy outright |
+| `kid_single_action` (kid-friendly only) | the instruction stanza is one concrete action |
+
+Top-level `kid_friendly: True` turns on the four kid items (interview question 4). Use the note to
+say what is verified and what is inferred ("lopsided canopy inferred from 'a quarter saved', not
+seen").
+
+**Cold solver.** `cold_solver.json` beside the spec, written by a reader who saw only the packet
+printed by `scripts/riddle_pages.py <spec.py> --skeleton` (the skeleton carries a hash of the
+riddle pages, so the report goes stale when they change): `{"riddles_sha256", "reader", "date",
+"results": {"1": {"named", "basis": "hint"|"evidence"|"none", "line"}, ...}}`. A stop named from
+its hint alone blocks; named from evidence passes and is recorded as easy. A missing or stale
+report blocks unless top-level `riddles: {"skip_cold_solver": "<reason>"}` is set; the reason is
+recorded as an unperformed check.
+
+`answer`: `name` (str), `subtitle_lines` (list[str], 2–4), `image` (filename inside `img/`; its
+record in `images` supplies the printed credit), `paras` (2 claim items), `blocks` (2 claim tuples),
+`notice` (one claim tuple, rendered in the tinted well).
+
+A **claim item** is `{"text": str, "sources": [source_id, ...]}`; a **claim tuple** is
+`(heading, text, [source_id, ...])`. Every answer-page item must carry at least one source id, and
+the build stops if one does not. Front-matter prose (`maker.paras`, `acts.items[].text`,
+`maker.facts`) may be written the same way when it states a fact; plain strings are allowed there
+and are recorded as unsourced in the ledger. Schema v2 answer fields `credit` and plain-string
+`paras`/`blocks` are retired and block the build.
 
 The answer page measures itself and shrinks image and type until it fits; it prints
 `!! answer N overflow` if it cannot. If you see that, cut text rather than editing the engine.
@@ -176,11 +231,53 @@ The answer page measures itself and shrinks image and type until it fits; it pri
 - `spoiler`: `title_lines`, `lede`, `check_title`, `checks` (list[str]).
 - `closing`: `kicker`, `title_lines`, `paras` (list[str], 2), `notes_title`, `note_fields`
   (list[str], each a prompt ending in a colon), `pullquote`.
-- `credits`: `title_lines`, `intro`, `images` (list[str], one line per photo with author, licence and
-  full URL), `sources` (list[str], one per written source with full URL and what it supports),
-  `colophon`.
+- `credits`: `title_lines`, `intro`, `colophon`. Nothing else: the photograph and written-source
+  lists are generated from the `images` and `sources` records below. A hand-written
+  `credits.images` or `credits.sources` blocks the build. The page flows onto a "Continued" page
+  when the records need one.
 
 Long URLs are hard-broken across lines automatically.
+
+## Provenance: `sources` and `images` (schema v3)
+
+Two top-level record lists. Write them before the prose (SKILL.md step 3), run
+`scripts/verify_provenance.py` after any change to them, and let the engine print the credits.
+
+`sources`: list of records, one per thing read.
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| `id` | yes | `[a-z0-9_]+`, cited from claim items |
+| `url` | yes | full `https://` URL of the page actually read |
+| `title`, `publisher` | yes | printed; the publisher is dropped from the line when the title already contains it |
+| `accessed` | yes | `YYYY-MM-DD` the page was read |
+| `supports` | yes | what was read there that the book relies on — the specific facts, not "background" |
+| `verified` | yes, `True` | you read the page yourself; `False` blocks unless `override` gives a reason |
+| `weaker_claim` | optional | where this source and others disagree, or support less than the popular story, and what the book therefore says. Printed as "Note:" in the credits and as a build warning |
+| `override` | optional | reason string that lets a failed live check (URL unreachable) pass; printed and recorded |
+
+`images`: list of records, one per photograph used.
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| `id`, `file` | yes | `file` is the filename inside `img/`, matched to `answer.image` |
+| `page_url` | yes | the Commons file page (`commons.wikimedia.org/wiki/File:...`) |
+| `file_url` | optional | the original upload URL; checked against Commons when given |
+| `author`, `licence` | yes | as the file page states them; `licence` must be in `ALLOWED_LICENCES` in `scripts/provenance.py` (CC0, public domain, CC BY, CC BY-SA 2.0–4.0). No NC or ND |
+| `licence_url` | optional | defaults from the licence name |
+| `caption` | optional | printed in the credits in place of the answer name; say what the photograph shows, honestly |
+| `attribution` | optional | wording the licence or author requires, printed verbatim |
+| `modified` | required if the file is not the Commons original | e.g. a Commons-served 960 px rendition; printed under the photo and in the credits, as CC BY asks |
+| `checked` | yes | `YYYY-MM-DD` you opened the file page |
+| `verified` | yes, `True` | author and licence confirmed on the file page by you |
+| `override` | optional | reason that lets a failed live check pass; printed and recorded |
+
+Optional `provenance: {"skip_live_checks": "<reason>"}` at top level lets a build run without
+`provenance_check.json`; the reason is recorded as an unperformed check.
+
+The build writes `<out>_record.json` beside the PDF: the records, the claim-to-source ledger, the
+live-check results, warnings, overrides and unperformed checks. A source no claim cites, a claim
+with no source, an image with no record and a stale check file all stop the build before drawing.
 
 ## Motif and ornament kinds
 

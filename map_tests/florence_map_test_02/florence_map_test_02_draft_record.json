@@ -5,13 +5,13 @@
     "sha256": "978ccf3286ea71a3aed28b0883a43a436bb1436de3812e928af59c7ab86f1881"
   },
   "code": {
-    "engine.py": "3c4862e4b6adec948d42f15ef523c4866fd8d5f86f5049e4459fb19cfa317aa4",
-    "mapgen.py": "8b6948ff8378b1c52ac19e1191d7ba331ae2ee8b9fa41cf7526745829748afd9",
+    "engine.py": "edfa05a689f27461d766cc85728b9c50cd976e277fe9eb08c9e422fdf98ea9aa",
+    "mapgen.py": "0c59f92b71e10c4de8c74c473a3da3d434e7bf567183edbb95c144dedd96a1aa",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "florence_map_test_02_draft.pdf",
-    "sha256": "3eacbd1d99a9ac46ae6cdbfb1e471b93f94fdbfe6938c53dc59eaa9666ecfd91"
+    "sha256": "ddecbe70b683a86d2f0e4130b436e48327cad94ae4b0c10635680c5bf7f9c5bb"
   },
   "status": "draft — pending author review",
   "report": {
@@ -54,6 +54,7 @@
       "hunt areas contain targets, are off-centre, do not overlap",
       "route-note figures derived from the solved route",
       "landmark candidates screened: stop targets, features holding a target, and every stop's secret terms",
+      "start corner outside every circle and clear of secret terms",
       "every circle has a landmark within 500 ft of its edge",
       "map title, notes and zone labels scanned for every stop's secret terms"
     ],
@@ -247,6 +248,15 @@
       }
     ],
     "landmark_pool_size": 212,
+    "start": {
+      "osm": "node/253306905",
+      "names": [
+        "Via dell'Acqua",
+        "Via dell'Anguillara"
+      ],
+      "caption": "Start: Via dell'Acqua and Via dell'Anguillara",
+      "ft_from_edge": 120
+    },
     "landmark_reach": [
       {
         "circle": 1,
@@ -327,7 +337,7 @@
           "points_per_metre": 0.5291,
           "extent_m": [
             614,
-            610
+            589
           ],
           "ratio_at_print": "1:5,358"
         },
@@ -335,7 +345,7 @@
           "scale_and_north": "top left, side by side"
         },
         "landmark_sets_tried": 1,
-        "search_nodes": 36,
+        "search_nodes": 45,
         "landmarks_chosen": [
           {
             "circle": 1,
