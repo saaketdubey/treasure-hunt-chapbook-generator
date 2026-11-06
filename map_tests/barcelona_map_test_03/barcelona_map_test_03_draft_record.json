@@ -1,0 +1,1226 @@
+{
+  "generator": "2.1.0-draft.1",
+  "spec": {
+    "path": "map_spec.py",
+    "sha256": "03ba84e9bea2f6a1131fd6fb7635512122fdc03b5a0c08f3a9793054f540ef9b"
+  },
+  "code": {
+    "engine.py": "3c4862e4b6adec948d42f15ef523c4866fd8d5f86f5049e4459fb19cfa317aa4",
+    "mapgen.py": "8b6948ff8378b1c52ac19e1191d7ba331ae2ee8b9fa41cf7526745829748afd9",
+    "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
+  },
+  "output": {
+    "pdf": "barcelona_map_test_03_draft.pdf",
+    "sha256": "9041884155faf6c1e4d743a0fb37e2b678138677671f12f39dc8d8d3e2692242"
+  },
+  "status": "draft — pending author review",
+  "report": {
+    "generator": "2.1.0-draft.1",
+    "errors": [],
+    "warnings": [
+      "route: leg 2→3 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 4→5 crosses Passeig de Picasso with unknown crossing data; check on site",
+      "route: leg 4→5 crosses Passeig de Picasso with unknown crossing data; check on site",
+      "route: leg 4→5 crosses Passeig de Picasso with unknown crossing data; check on site",
+      "route: leg 4→5 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 4→5 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 5→6 crosses Passeig de Pujades with unknown crossing data; check on site",
+      "route: leg 5→6 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 5→6 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 6→7 crosses Passeig de Lluís Companys with unmarked crossing data; check on site",
+      "route: leg 6→7 crosses Plaça d'Urquinaona with unknown crossing data; check on site",
+      "route: leg 6→7 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 6→7 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 6→7 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 6→7 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 7→8 crosses Avinguda Diagonal (lateral mar) with unmarked crossing data; check on site",
+      "route: leg 7→8 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 7→8 crosses crossing way with unknown crossing data; check on site",
+      "route: leg 7→8 crosses crossing way with unknown crossing data; check on site",
+      "circle 5 grown from 130 ft to 140 ft so it reads at this page's scale",
+      "circle 6 grown from 130 ft to 140 ft so it reads at this page's scale",
+      "circle 7 grown from 130 ft to 400 ft so it reads at this page's scale",
+      "circle 8 grown from 130 ft to 400 ft so it reads at this page's scale",
+      "page 3: label: area name 7 could not float onto its circle; placed beside it"
+    ],
+    "labels": {
+      "placed": [
+        {
+          "kind": "zone",
+          "text": "THE DRAGON'S / BACK",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "landmark",
+          "text": "CASA LLEÓ / MORERA",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "zone",
+          "text": "THE UNFINISHED / ONE",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "landmark",
+          "text": "CARRER DE / LA MARINA",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "cafe",
+          "text": "HERE BUBBLE TEA",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "cafe",
+          "text": "Bingbing Cafe",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "cafe",
+          "text": "Syra Coffee",
+          "size_pt": 6.0
+        }
+      ],
+      "dropped": [],
+      "suppressed": []
+    },
+    "automated_checks": [
+      "data files match manifest SHA-256",
+      "ticketed / hours-limited stops come last",
+      "every leg solved on the OSM walking network",
+      "retracing measured against no-backtracking claim",
+      "major-road crossings listed with crossing data",
+      "hunt areas contain targets, are off-centre, do not overlap",
+      "route-note figures derived from the solved route",
+      "landmark candidates screened: stop targets, features holding a target, and every stop's secret terms",
+      "every circle has a landmark within 500 ft of its edge",
+      "map title, notes and zone labels scanned for every stop's secret terms"
+    ],
+    "unperformed_checks": [
+      "human review of rendered geography against read sources",
+      "physical half-letter print check",
+      "actual phone presentation check",
+      "on-site walk of the solved route",
+      "semantic (non-literal) spoiler review"
+    ],
+    "data": {
+      "manifest": "data/manifest.json",
+      "files": [
+        {
+          "file": "bbox_0_0.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.162500,41.381500,2.169500,41.387750",
+          "fetched_utc": "2026-10-12T16:37:21+00:00",
+          "bytes_uncompressed": 7144884,
+          "sha256_uncompressed": "fa56c26723dd5f6b9a808a06a860350d28111992dc60ef64b6203878777d35a8"
+        },
+        {
+          "file": "bbox_0_1.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.169500,41.381500,2.176500,41.387750",
+          "fetched_utc": "2026-10-12T16:37:22+00:00",
+          "bytes_uncompressed": 7918506,
+          "sha256_uncompressed": "77150012d20c3098e16fc51dac81f9fd8ee3491320b9db5e941c93849a5dd43d"
+        },
+        {
+          "file": "bbox_0_2.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.162500,41.387750,2.169500,41.394000",
+          "fetched_utc": "2026-10-12T16:37:22+00:00",
+          "bytes_uncompressed": 7805550,
+          "sha256_uncompressed": "7afe8d66088c4db75293d2f937b8d33800118bdd2750a368acc50ee04b0af4f0"
+        },
+        {
+          "file": "bbox_0_3.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.169500,41.387750,2.176500,41.394000",
+          "fetched_utc": "2026-10-12T16:37:23+00:00",
+          "bytes_uncompressed": 9096667,
+          "sha256_uncompressed": "1fe105a82c5cd4386f6e82458ed0892f058d4b6180f011cdddda2ed171ecfbb9"
+        },
+        {
+          "file": "bbox_1_0.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.176500,41.381500,2.183500,41.387750",
+          "fetched_utc": "2026-10-12T16:37:23+00:00",
+          "bytes_uncompressed": 9075246,
+          "sha256_uncompressed": "e569a4b34a6b385f556a115da27d7c02151452d7fc4c718be6db4cc3dc0f5132"
+        },
+        {
+          "file": "bbox_1_1.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.183500,41.381500,2.190500,41.387750",
+          "fetched_utc": "2026-10-12T16:37:23+00:00",
+          "bytes_uncompressed": 3998305,
+          "sha256_uncompressed": "4eab74370e0144c9cb61cbc169b493fea3e6fcf91b68527ace2ab95d446df544"
+        },
+        {
+          "file": "bbox_1_2.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.176500,41.387750,2.183500,41.394000",
+          "fetched_utc": "2026-10-12T16:37:24+00:00",
+          "bytes_uncompressed": 10427669,
+          "sha256_uncompressed": "ba77048df6ffa7a96d6bf518a99834f7ff0ae397f042e7336d3cc5e9a2dee07a"
+        },
+        {
+          "file": "bbox_1_3.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.183500,41.387750,2.190500,41.394000",
+          "fetched_utc": "2026-10-12T16:37:24+00:00",
+          "bytes_uncompressed": 4292091,
+          "sha256_uncompressed": "6d717c67790ca54bce4521b8571b465c3c1c877f9895ab662818c5a362a834d1"
+        },
+        {
+          "file": "bbox_2_0.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.162500,41.394000,2.169500,41.400250",
+          "fetched_utc": "2026-10-12T16:37:25+00:00",
+          "bytes_uncompressed": 7774024,
+          "sha256_uncompressed": "59b36473dbebdfa00684d2244c7112dfa00f564c8831b129c24f70a8f949f135"
+        },
+        {
+          "file": "bbox_2_1.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.169500,41.394000,2.176500,41.400250",
+          "fetched_utc": "2026-10-12T16:37:25+00:00",
+          "bytes_uncompressed": 7855566,
+          "sha256_uncompressed": "4d47f31aed9803f2c798b4579b27d295cf815b7232504716620209c8e7c195e6"
+        },
+        {
+          "file": "bbox_2_2.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.162500,41.400250,2.169500,41.406500",
+          "fetched_utc": "2026-10-12T16:37:25+00:00",
+          "bytes_uncompressed": 3896170,
+          "sha256_uncompressed": "9c960027e7f5f6ea0e633d09da6b1416e88351209a4f0823085f590561dd1288"
+        },
+        {
+          "file": "bbox_2_3.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.169500,41.400250,2.176500,41.406500",
+          "fetched_utc": "2026-10-12T16:37:26+00:00",
+          "bytes_uncompressed": 6833017,
+          "sha256_uncompressed": "0aedec303f50b983f9d2f8f6c6e117ccd7f055dd749671a419e8509338c72b38"
+        },
+        {
+          "file": "bbox_3.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=2.176500,41.394000,2.190500,41.406500",
+          "fetched_utc": "2026-10-12T16:37:27+00:00",
+          "bytes_uncompressed": 20237921,
+          "sha256_uncompressed": "cd5230659a4603cb42179d63887bea5457298b590ea9e08b0c4fff6ba5fa0242"
+        },
+        {
+          "file": "relation_3298476.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/relation/3298476/full",
+          "fetched_utc": "2026-10-12T16:37:27+00:00",
+          "bytes_uncompressed": 17286,
+          "sha256_uncompressed": "e37c1b09ee6a388fef62fb83b99883585d4aec078b682843ab295e5e974f2459"
+        },
+        {
+          "file": "relation_18708616.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/relation/18708616/full",
+          "fetched_utc": "2026-10-12T16:37:27+00:00",
+          "bytes_uncompressed": 7080,
+          "sha256_uncompressed": "882b5c38556184b375c179d9f2305d5f91d1f8c9cc931e1af1ab929695ebca57"
+        },
+        {
+          "file": "relation_9427554.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/relation/9427554/full",
+          "fetched_utc": "2026-10-12T16:37:27+00:00",
+          "bytes_uncompressed": 14903,
+          "sha256_uncompressed": "4e53338f5ea4201750832811f9e266d99c95b8bc7a683d543bb796d690dbe55d"
+        },
+        {
+          "file": "relation_9194723.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/relation/9194723/full",
+          "fetched_utc": "2026-10-12T16:37:27+00:00",
+          "bytes_uncompressed": 98879,
+          "sha256_uncompressed": "5279258855190e51f42a54262b980b6b2f8bb3cf49d76a2b8f51753872c3857c"
+        }
+      ],
+      "hash_check": "passed",
+      "licence": "ODbL 1.0",
+      "attribution": "© OpenStreetMap contributors"
+    },
+    "route": {
+      "total_m": 6130.9,
+      "retrace_m": 0,
+      "avoid_steps": true,
+      "legs": [
+        {
+          "from": 1,
+          "to": 2,
+          "length_m": 62.1,
+          "crossings": []
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "length_m": 509.8,
+          "crossings": [
+            {
+              "road": "Via Laietana",
+              "osm_node": "node/209110229",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/882175550",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/753752119",
+              "crossing_tag": null,
+              "control": "unknown"
+            }
+          ]
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "length_m": 453.0,
+          "crossings": []
+        },
+        {
+          "from": 4,
+          "to": 5,
+          "length_m": 1038.9,
+          "crossings": [
+            {
+              "road": "Passeig de Picasso",
+              "osm_node": "node/243347086",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "Passeig de Picasso",
+              "osm_node": "node/243336646",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "Passeig de Picasso",
+              "osm_node": "node/13953946003",
+              "crossing_tag": "uncontrolled",
+              "control": "controlled"
+            },
+            {
+              "road": "Passeig de Picasso",
+              "osm_node": "node/243336865",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/819205638",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/819205636",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/1058278830",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            }
+          ]
+        },
+        {
+          "from": 5,
+          "to": 6,
+          "length_m": 677.5,
+          "crossings": [
+            {
+              "road": "Passeig de Pujades",
+              "osm_node": "node/5278618284",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Passeig de Pujades",
+              "osm_node": "node/30243128",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "Passeig de Lluís Companys",
+              "osm_node": "node/3184350856",
+              "crossing_tag": "uncontrolled",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/843296929",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/843296930",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/850225689",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/850239190",
+              "crossing_tag": null,
+              "control": "unknown"
+            }
+          ]
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "length_m": 1632.8,
+          "crossings": [
+            {
+              "road": "Passeig de Lluís Companys",
+              "osm_node": "node/1306836716",
+              "crossing_tag": "unmarked",
+              "control": "unmarked"
+            },
+            {
+              "road": "Passeig de Lluís Companys",
+              "osm_node": "node/7862216623",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Plaça d'Urquinaona",
+              "osm_node": "node/7160352485",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Ronda de Sant Pere",
+              "osm_node": "node/7529357375",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Plaça d'Urquinaona",
+              "osm_node": "node/26057131",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "Passeig de Gràcia",
+              "osm_node": "node/1400473851",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Gran Via de les Corts Catalanes",
+              "osm_node": "node/3229689817",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Gran Via de les Corts Catalanes",
+              "osm_node": "node/3229689820",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/1318504197",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/850239186",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/766661601",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/766661605",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/766661608",
+              "crossing_tag": "uncontrolled",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/766661610",
+              "crossing_tag": "uncontrolled",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/766661619",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/766661622",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/126304483",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/1564121794",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/316789517",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/1502909017",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            }
+          ]
+        },
+        {
+          "from": 7,
+          "to": 8,
+          "length_m": 1756.7,
+          "crossings": [
+            {
+              "road": "Passeig de Gràcia",
+              "osm_node": "node/5761275827",
+              "crossing_tag": "marked",
+              "control": "controlled"
+            },
+            {
+              "road": "Carrer d'Aragó",
+              "osm_node": "node/3184416792",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Carrer de Pau Claris",
+              "osm_node": "node/5761294809",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Carrer de València",
+              "osm_node": "node/6762205311",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Carrer de Roger de Llúria",
+              "osm_node": "node/7526529972",
+              "crossing_tag": "uncontrolled",
+              "control": "controlled"
+            },
+            {
+              "road": "Carrer de Bailèn",
+              "osm_node": "node/11174857178",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Avinguda Diagonal (lateral mar)",
+              "osm_node": "node/11745708820",
+              "crossing_tag": "unmarked",
+              "control": "unmarked"
+            },
+            {
+              "road": "Passeig de Sant Joan",
+              "osm_node": "node/3207273318",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Plaça de Mossèn Jacint Verdaguer",
+              "osm_node": "node/12963915413",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Carrer de Mallorca",
+              "osm_node": "node/3196848706",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "Carrer de Sardenya",
+              "osm_node": "node/2984209662",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/608032995",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/608034975",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/608034973",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/882290026",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/882290027",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/882297538",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/886035878",
+              "crossing_tag": null,
+              "control": "unknown"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/885702925",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/885702926",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            }
+          ]
+        }
+      ]
+    },
+    "landmarks_excluded": [
+      {
+        "name": "Pla de la Seu",
+        "osm": "way/245839653",
+        "reason": "matches secret term 'Seu' for stop 1"
+      },
+      {
+        "name": "Hotel Barcelona Catedral",
+        "osm": "way/818498498",
+        "reason": "matches secret term 'Catedral' for stop 1"
+      },
+      {
+        "name": "Plaça de Santa Caterina",
+        "osm": "way/20352050",
+        "reason": "matches secret term 'Santa Caterina' for stop 4"
+      },
+      {
+        "name": "Mercat de Santa Caterina",
+        "osm": "way/31957078",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Basílica de Santa Maria del Mar",
+        "osm": "way/51260215",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Palau Reial Major",
+        "osm": "way/1533889825",
+        "reason": "matches secret term 'Palau Reial' for stop 2"
+      },
+      {
+        "name": "Arc de Triomf",
+        "osm": "way/377875377",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Cascada del Parc de la Ciutadella",
+        "osm": "way/135115868",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Plaça de la Sagrada Família",
+        "osm": "way/23431084",
+        "reason": "matches secret term 'Sagrada Família' for stop 8"
+      },
+      {
+        "name": "Escoles de la Sagrada Família",
+        "osm": "way/132513667",
+        "reason": "matches secret term 'Sagrada Família' for stop 8"
+      },
+      {
+        "name": "Avinguda de Gaudí",
+        "osm": "way/175630078",
+        "reason": "matches secret term 'Gaudí' for stop 7"
+      },
+      {
+        "name": "Botiga Oficial Sagrada Família",
+        "osm": "way/459465564",
+        "reason": "matches secret term 'Sagrada Família' for stop 8"
+      },
+      {
+        "name": "Catedral de la Santa Creu i Santa Eulàlia",
+        "osm": "relation/3298476",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Avinguda de la Catedral",
+        "osm": "relation/8842433",
+        "reason": "matches secret term 'Catedral' for stop 1"
+      },
+      {
+        "name": "Hotel Catalonia Catedral",
+        "osm": "relation/11226976",
+        "reason": "matches secret term 'Catedral' for stop 1"
+      },
+      {
+        "name": "Casa Batlló",
+        "osm": "relation/9427554",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Parc de la Ciutadella",
+        "osm": "relation/271463",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Saló del Tinell",
+        "osm": "relation/7363116",
+        "reason": "matches secret term 'Tinell' for stop 2"
+      },
+      {
+        "name": "Basílica dels Sants Màrtirs Just i Pastor",
+        "osm": "relation/8908328",
+        "reason": "matches secret term 'Basílica' for stop 3"
+      },
+      {
+        "name": "Plaça del Rei",
+        "osm": "relation/18708616",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Passeig de Lluís Companys",
+        "osm": "relation/6580934",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Plaça de Gaudí",
+        "osm": "relation/7708297",
+        "reason": "matches secret term 'Gaudí' for stop 7"
+      },
+      {
+        "name": "Basílica de la Sagrada Família",
+        "osm": "relation/9194723",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Baixada de Santa Eulàlia",
+        "osm": "road:Baixada de Santa Eulàlia",
+        "reason": "matches secret term 'Santa Eulàlia' for stop 1"
+      },
+      {
+        "name": "Avinguda de la Catedral",
+        "osm": "road:Avinguda de la Catedral",
+        "reason": "matches secret term 'Catedral' for stop 1"
+      },
+      {
+        "name": "Carrer de Sant Domènec de Santa Caterina",
+        "osm": "road:Carrer de Sant Domènec de Santa Caterina",
+        "reason": "matches secret term 'Santa Caterina' for stop 4"
+      },
+      {
+        "name": "Plaça de Santa Caterina",
+        "osm": "road:Plaça de Santa Caterina",
+        "reason": "matches secret term 'Santa Caterina' for stop 4"
+      },
+      {
+        "name": "Avinguda de Gaudí",
+        "osm": "road:Avinguda de Gaudí",
+        "reason": "matches secret term 'Gaudí' for stop 7"
+      }
+    ],
+    "landmark_pool_size": 337,
+    "cafe_break": {
+      "after_stop": 6,
+      "candidates": [
+        {
+          "name": "HERE BUBBLE TEA",
+          "osm": "node/14056026502",
+          "url": "https://www.openstreetmap.org/node/14056026502",
+          "kind": "amenity=cafe",
+          "ft_from_route": 15,
+          "opening_hours": "Mo-Su 12:30-21:30"
+        },
+        {
+          "name": "Bingbing Cafe",
+          "osm": "node/6333736423",
+          "url": "https://www.openstreetmap.org/node/6333736423",
+          "kind": "amenity=cafe",
+          "ft_from_route": 93,
+          "opening_hours": "Mo-Fr 09:00-21:00; Sa, Su 10:30-21:00"
+        },
+        {
+          "name": "Syra Coffee",
+          "osm": "node/11236463637",
+          "url": "https://www.openstreetmap.org/node/11236463637",
+          "kind": "amenity=cafe",
+          "ft_from_route": 39,
+          "opening_hours": "Mo-Sa 08:00-20:00"
+        },
+        {
+          "name": "Vivari",
+          "osm": "node/9241043556",
+          "url": "https://www.openstreetmap.org/node/9241043556",
+          "kind": "amenity=cafe",
+          "ft_from_route": 21,
+          "opening_hours": null
+        },
+        {
+          "name": "Trole",
+          "osm": "node/9699791022",
+          "url": "https://www.openstreetmap.org/node/9699791022",
+          "kind": "amenity=cafe",
+          "ft_from_route": 25,
+          "opening_hours": null
+        },
+        {
+          "name": "Hanami",
+          "osm": "node/9240224982",
+          "url": "https://www.openstreetmap.org/node/9240224982",
+          "kind": "amenity=cafe",
+          "ft_from_route": 29,
+          "opening_hours": null
+        }
+      ]
+    },
+    "landmark_reach": [
+      {
+        "circle": 1,
+        "landmark": "CAPELLA DE SANTA LLÚCIA",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 2,
+        "landmark": "BAIXADA DE SANTA CLARA",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 3,
+        "landmark": "CARRER DE LA VOLTA DELS TAMBORETS",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 4,
+        "landmark": "AVINGUDA DE FRANCESC CAMBÓ",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 5,
+        "landmark": "PASSEIG DE JOAQUIM RENART",
+        "ft_from_edge": 70
+      },
+      {
+        "circle": 6,
+        "landmark": "PASSEIG DE LLUÍS COMPANYS",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 7,
+        "landmark": "CARRER D'ARAGÓ",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 8,
+        "landmark": "TORRE DE LA MARE DE DÉU",
+        "ft_from_edge": 0
+      }
+    ],
+    "panel_plan": {
+      "pages": 3,
+      "panels": [
+        {
+          "stops": [
+            1,
+            4
+          ],
+          "carry_in": null,
+          "scale_pt_per_m": 0.498,
+          "needed_pt_per_m": 0.384,
+          "circles_grown_ft": {}
+        },
+        {
+          "stops": [
+            5,
+            6
+          ],
+          "carry_in": 4,
+          "scale_pt_per_m": 0.365,
+          "needed_pt_per_m": 0.356,
+          "circles_grown_ft": {
+            "5": 140,
+            "6": 140
+          }
+        },
+        {
+          "stops": [
+            7,
+            8
+          ],
+          "carry_in": 6,
+          "scale_pt_per_m": 0.126,
+          "needed_pt_per_m": 0.125,
+          "circles_grown_ft": {
+            "7": 400,
+            "8": 400
+          }
+        }
+      ]
+    },
+    "scale_bar_shared": null,
+    "pages": [
+      {
+        "automated_checks": [
+          "labels placed without collision against labels, markers, route, areas, furniture and plate edge",
+          "label type floor 6.0 pt; no shrinking",
+          "geographic names matching secret terms suppressed before placement"
+        ],
+        "labels": {
+          "placed": [
+            {
+              "kind": "zone",
+              "text": "THE DRAGON'S / BACK",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "CASA LLEÓ / MORERA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "zone",
+              "text": "THE UNFINISHED / ONE",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "CARRER DE / LA MARINA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "HERE BUBBLE TEA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "Bingbing Cafe",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "Syra Coffee",
+              "size_pt": 6.0
+            }
+          ],
+          "dropped": [],
+          "suppressed": []
+        },
+        "scale": {
+          "points_per_metre": 0.4978,
+          "extent_m": [
+            653,
+            651
+          ],
+          "ratio_at_print": "1:5,694"
+        },
+        "furniture": {
+          "scale_and_north": "top left, side by side"
+        },
+        "landmark_sets_tried": 2,
+        "search_nodes": 53,
+        "landmarks_chosen": [
+          {
+            "circle": 1,
+            "landmark": "Museu Frederic Marès",
+            "osm": "way/454488169",
+            "ft_from_edge": 32,
+            "score": 3.57,
+            "ranked_alternatives": [
+              "Museu Frederic Marès",
+              "Palau de la Generalitat de Catalunya",
+              "Casa Morell",
+              "Casa de la Pia Almoina",
+              "Casa Moxó",
+              "Casa de la Ciutat"
+            ]
+          },
+          {
+            "circle": 2,
+            "landmark": "Casa Cambó",
+            "osm": "way/818493042",
+            "ft_from_edge": 114,
+            "score": 3.54,
+            "ranked_alternatives": [
+              "Museu Frederic Marès",
+              "Casa Cambó",
+              "Palau Requesens",
+              "Palau Moxó",
+              "Casa de la Ciutat",
+              "Casa de la Pia Almoina"
+            ]
+          },
+          {
+            "circle": 3,
+            "landmark": "Pla de Palau",
+            "osm": "relation/7348315",
+            "ft_from_edge": 184,
+            "score": 3.67,
+            "ranked_alternatives": [
+              "Pla de Palau",
+              "Palau Dalmases",
+              "Museu Picasso",
+              "la Seca",
+              "Casa Meca",
+              "Capella del Santíssim"
+            ]
+          },
+          {
+            "circle": 4,
+            "landmark": "Palau Dou",
+            "osm": "way/385569196",
+            "ft_from_edge": 341,
+            "score": 3.03,
+            "ranked_alternatives": [
+              "Casa Cambó",
+              "Palau Dou",
+              "Avinguda de Francesc Cambó",
+              "Plaça de Joan Capri",
+              "Plaça de Sant Cugat",
+              "Carrer de Gombau"
+            ]
+          }
+        ]
+      },
+      {
+        "automated_checks": [
+          "labels placed without collision against labels, markers, route, areas, furniture and plate edge",
+          "label type floor 6.0 pt; no shrinking",
+          "geographic names matching secret terms suppressed before placement"
+        ],
+        "labels": {
+          "placed": [
+            {
+              "kind": "zone",
+              "text": "THE DRAGON'S / BACK",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "CASA LLEÓ / MORERA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "zone",
+              "text": "THE UNFINISHED / ONE",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "CARRER DE / LA MARINA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "HERE BUBBLE TEA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "Bingbing Cafe",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "Syra Coffee",
+              "size_pt": 6.0
+            }
+          ],
+          "dropped": [],
+          "suppressed": []
+        },
+        "scale": {
+          "points_per_metre": 0.3645,
+          "extent_m": [
+            892,
+            933
+          ],
+          "ratio_at_print": "1:7,776"
+        },
+        "furniture": {
+          "scale_and_north": "top left, side by side"
+        },
+        "landmark_sets_tried": 1,
+        "search_nodes": 16,
+        "landmarks_chosen": [
+          {
+            "circle": 5,
+            "landmark": "Passeig de Joaquim Renart",
+            "osm": "way/1259743012",
+            "ft_from_edge": 70,
+            "score": 1.61,
+            "ranked_alternatives": [
+              "Passeig de Joaquim Renart",
+              "Carrer de Nàpols",
+              "Passeig de Pujades",
+              "Avinguda Meridiana",
+              "Carrer de Pujades",
+              "Carrer de Wellington"
+            ]
+          },
+          {
+            "circle": 6,
+            "landmark": "Escola Pere Vila",
+            "osm": "way/288237022",
+            "ft_from_edge": 70,
+            "score": 2.2,
+            "ranked_alternatives": [
+              "Escola Pere Vila",
+              "Institut Pau Claris",
+              "Passeig de Sant Joan",
+              "Benet Corner",
+              "Passeig de Lluís Companys",
+              "Carrer de Trafalgar"
+            ]
+          }
+        ]
+      },
+      {
+        "automated_checks": [
+          "labels placed without collision against labels, markers, route, areas, furniture and plate edge",
+          "label type floor 6.0 pt; no shrinking",
+          "geographic names matching secret terms suppressed before placement"
+        ],
+        "labels": {
+          "placed": [
+            {
+              "kind": "zone",
+              "text": "THE DRAGON'S / BACK",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "CASA LLEÓ / MORERA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "zone",
+              "text": "THE UNFINISHED / ONE",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "CARRER DE / LA MARINA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "HERE BUBBLE TEA",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "Bingbing Cafe",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "cafe",
+              "text": "Syra Coffee",
+              "size_pt": 6.0
+            }
+          ],
+          "dropped": [],
+          "suppressed": []
+        },
+        "scale": {
+          "points_per_metre": 0.1335,
+          "extent_m": [
+            2435,
+            2165
+          ],
+          "ratio_at_print": "1:21,228"
+        },
+        "furniture": {
+          "scale_and_north": "top left, side by side"
+        },
+        "landmark_sets_tried": 1,
+        "search_nodes": 43,
+        "cafes_shown": [
+          "HERE BUBBLE TEA",
+          "Bingbing Cafe",
+          "Syra Coffee"
+        ],
+        "landmarks_chosen": [
+          {
+            "circle": 7,
+            "landmark": "Casa Lleó Morera",
+            "osm": "way/679019157",
+            "ft_from_edge": 127,
+            "score": 2.31,
+            "ranked_alternatives": [
+              "Casa Lleó Morera",
+              "Carrer d'Aragó",
+              "Rambla de Catalunya",
+              "Passeig de Gràcia",
+              "Col·legi Lestonnac",
+              "Institut Jaume Balmes"
+            ]
+          },
+          {
+            "circle": 8,
+            "landmark": "Carrer de la Marina",
+            "osm": "way/1491046071",
+            "ft_from_edge": 59,
+            "score": 1.87,
+            "ranked_alternatives": [
+              "Carrer de la Marina",
+              "Carrer de Sardenya",
+              "Carrer de Mallorca",
+              "Carrer de Provença",
+              "Jardins interior d'illa",
+              "Jardins de les Treballadores de Numax"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

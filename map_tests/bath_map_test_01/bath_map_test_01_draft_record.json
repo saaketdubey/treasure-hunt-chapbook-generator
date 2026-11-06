@@ -1,0 +1,245 @@
+{
+  "generator": "2.1.0-draft.1",
+  "spec": {
+    "path": "map_spec.py",
+    "sha256": "75c3890a3b478da6d744a9f7cafc0d5ef620e725f3b7c5db29d1733d9bd960d2"
+  },
+  "code": {
+    "engine.py": "3c4862e4b6adec948d42f15ef523c4866fd8d5f86f5049e4459fb19cfa317aa4",
+    "mapgen.py": "8b6948ff8378b1c52ac19e1191d7ba331ae2ee8b9fa41cf7526745829748afd9",
+    "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
+  },
+  "output": {
+    "pdf": "bath_map_test_01_draft.pdf",
+    "sha256": "c8af3e29fb2edf46c2f5c3022f2b8bf7176eb6d2f47c5cb977afe062fa1b1849"
+  },
+  "status": "draft — pending author review",
+  "report": {
+    "generator": "2.1.0-draft.1",
+    "errors": [],
+    "warnings": [
+      "route: leg 2→3 crosses crossing way with unmarked crossing data; check on site",
+      "route: leg 3→4 crosses crossing way with unmarked crossing data; check on site"
+    ],
+    "labels": {
+      "placed": [
+        {
+          "kind": "landmark",
+          "text": "GREAT / PULTENEY STREET",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "zone",
+          "text": "WEST OF / THE SPRINGS",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "zone",
+          "text": "THE CHURCH / FORECOURT",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "zone",
+          "text": "EAST OF / THE CHURCH",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "zone",
+          "text": "ABOVE / THE WATER",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "zone",
+          "text": "ACROSS / THE RIVER",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "landmark",
+          "text": "ROMAN / BATHS",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "landmark",
+          "text": "GUILDHALL",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "landmark",
+          "text": "PARADE / GARDENS",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "landmark",
+          "text": "PULTENEY / BRIDGE",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "water",
+          "text": "RIVER AVON",
+          "size_pt": 6.2
+        }
+      ],
+      "dropped": [],
+      "suppressed": []
+    },
+    "automated_checks": [
+      "data files match manifest SHA-256",
+      "ticketed / hours-limited stops come last",
+      "every leg solved on the OSM walking network",
+      "retracing measured against no-backtracking claim",
+      "major-road crossings listed with crossing data",
+      "hunt areas contain targets, are off-centre, do not overlap",
+      "route-note figures derived from the solved route",
+      "every circle has a landmark within 500 ft of its edge",
+      "map title, notes and zone labels scanned for every stop's secret terms",
+      "labels placed without collision against labels, markers, route, areas, furniture and plate edge",
+      "label type floor 6.0 pt; no shrinking",
+      "geographic names matching secret terms suppressed before placement"
+    ],
+    "unperformed_checks": [
+      "human review of rendered geography against read sources",
+      "physical half-letter print check",
+      "actual phone presentation check",
+      "on-site walk of the solved route",
+      "semantic (non-literal) spoiler review"
+    ],
+    "data": {
+      "manifest": "data/manifest.json",
+      "files": [
+        {
+          "file": "bbox.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=-2.3650,51.3785,-2.3525,51.3860",
+          "fetched_utc": "2026-10-11T22:56:19+00:00",
+          "bytes_uncompressed": 5558360,
+          "sha256_uncompressed": "0e2165bfd5935c8fa35e35a18fa6714e4f7ab09d8c699cd681ee70ed1b9d4b4a"
+        },
+        {
+          "file": "relation_383291.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/relation/383291/full",
+          "fetched_utc": "2026-10-11T22:56:20+00:00",
+          "bytes_uncompressed": 11652,
+          "sha256_uncompressed": "9bc1fd789623394620dec4d8306ad478b8ffed88c0f9449182b69b9bc0c4003d"
+        }
+      ],
+      "hash_check": "passed",
+      "licence": "ODbL 1.0",
+      "attribution": "© OpenStreetMap contributors"
+    },
+    "route": {
+      "total_m": 668.8,
+      "retrace_m": 0,
+      "avoid_steps": true,
+      "legs": [
+        {
+          "from": 1,
+          "to": 2,
+          "length_m": 119.5,
+          "crossings": []
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "length_m": 190.0,
+          "crossings": [
+            {
+              "road": "Orange Grove",
+              "osm_node": "node/2443288745",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/1523909658",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/1523901555",
+              "crossing_tag": "unmarked",
+              "control": "unmarked"
+            }
+          ]
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "length_m": 108.8,
+          "crossings": [
+            {
+              "road": "crossing way",
+              "osm_way": "way/1523901552",
+              "crossing_tag": "unmarked",
+              "control": "unmarked"
+            }
+          ]
+        },
+        {
+          "from": 4,
+          "to": 5,
+          "length_m": 250.4,
+          "crossings": [
+            {
+              "road": "Grand Parade",
+              "osm_node": "node/520792121",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            }
+          ]
+        }
+      ]
+    },
+    "landmark_reach": [
+      {
+        "circle": 1,
+        "landmark": "ROMAN BATHS",
+        "ft_from_edge": 58
+      },
+      {
+        "circle": 2,
+        "landmark": "ROMAN BATHS",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 3,
+        "landmark": "PARADE GARDENS",
+        "ft_from_edge": 32
+      },
+      {
+        "circle": 4,
+        "landmark": "PARADE GARDENS",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 5,
+        "landmark": "GREAT PULTENEY STREET",
+        "ft_from_edge": 0
+      }
+    ],
+    "panel_plan": {
+      "pages": 1,
+      "why": "locked frame",
+      "panels": [
+        {
+          "stops": [
+            1,
+            5
+          ]
+        }
+      ]
+    },
+    "scale": {
+      "points_per_metre": 0.541,
+      "extent_m": [
+        601,
+        545
+      ],
+      "ratio_at_print": "1:5,240"
+    },
+    "furniture": {
+      "scale_and_north": "top left, side by side"
+    },
+    "landmark_sets_tried": 1,
+    "search_nodes": 182
+  }
+}

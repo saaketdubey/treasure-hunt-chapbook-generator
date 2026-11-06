@@ -1,0 +1,23 @@
+{
+  "source": "OpenStreetMap",
+  "licence": "ODbL 1.0",
+  "attribution": "\u00a9 OpenStreetMap contributors",
+  "copyright_url": "https://www.openstreetmap.org/copyright",
+  "bbox": "11.2510,43.7610,11.2710,43.7730",
+  "files": [
+    {
+      "file": "bbox.osm.gz",
+      "url": "https://api.openstreetmap.org/api/0.6/map?bbox=11.2510,43.7610,11.2710,43.7730",
+      "fetched_utc": "2026-10-12T05:34:21+00:00",
+      "bytes_uncompressed": 13819344,
+      "sha256_uncompressed": "0caa807c30da5180d793a58d6946f334256256683d89c527462ecfd5607409b2"
+    },
+    {
+      "file": "relation_1461712.osm.gz",
+      "url": "https://api.openstreetmap.org/api/0.6/relation/1461712/full",
+      "fetched_utc": "2026-10-12T05:34:22+00:00",
+      "bytes_uncompressed": 10161,
+      "sha256_uncompressed": "a9446054334dee776367106836547cd09b1d2ca851d3595ff2d5464028f2c188"
+    }
+  ]
+}

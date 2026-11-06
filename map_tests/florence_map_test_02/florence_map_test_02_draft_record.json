@@ -1,0 +1,447 @@
+{
+  "generator": "2.1.0-draft.1",
+  "spec": {
+    "path": "map_spec.py",
+    "sha256": "978ccf3286ea71a3aed28b0883a43a436bb1436de3812e928af59c7ab86f1881"
+  },
+  "code": {
+    "engine.py": "3c4862e4b6adec948d42f15ef523c4866fd8d5f86f5049e4459fb19cfa317aa4",
+    "mapgen.py": "8b6948ff8378b1c52ac19e1191d7ba331ae2ee8b9fa41cf7526745829748afd9",
+    "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
+  },
+  "output": {
+    "pdf": "florence_map_test_02_draft.pdf",
+    "sha256": "3eacbd1d99a9ac46ae6cdbfb1e471b93f94fdbfe6938c53dc59eaa9666ecfd91"
+  },
+  "status": "draft — pending author review",
+  "report": {
+    "generator": "2.1.0-draft.1",
+    "errors": [],
+    "warnings": [
+      "stop 3: target position given by coordinates and not verified on site; the circle may not contain the target",
+      "route: stop 1 is ticketed but is not the last stop; waived for this map test: map test reproduces the Cellini's Florence route as written; the book's stop order is backlog E work",
+      "route: leg 1→2 crosses crossing way with unknown crossing data; check on site",
+      "page 1: label: area name 3 could not float onto its circle; placed beside it",
+      "page 2: label: area name 5 could not float onto its circle; placed beside it"
+    ],
+    "labels": {
+      "placed": [
+        {
+          "kind": "zone",
+          "text": "THE NAME ALONG / THE ARNO",
+          "size_pt": 6.5
+        },
+        {
+          "kind": "landmark",
+          "text": "NUOVO PARCO / MICHELANGELO",
+          "size_pt": 6.0
+        },
+        {
+          "kind": "water",
+          "text": "ARNO",
+          "size_pt": 6.2
+        }
+      ],
+      "dropped": [],
+      "suppressed": []
+    },
+    "automated_checks": [
+      "data files match manifest SHA-256",
+      "ticketed / hours-limited stops come last",
+      "every leg solved on the OSM walking network",
+      "retracing measured against no-backtracking claim",
+      "major-road crossings listed with crossing data",
+      "hunt areas contain targets, are off-centre, do not overlap",
+      "route-note figures derived from the solved route",
+      "landmark candidates screened: stop targets, features holding a target, and every stop's secret terms",
+      "every circle has a landmark within 500 ft of its edge",
+      "map title, notes and zone labels scanned for every stop's secret terms"
+    ],
+    "unperformed_checks": [
+      "human review of rendered geography against read sources",
+      "physical half-letter print check",
+      "actual phone presentation check",
+      "on-site walk of the solved route",
+      "semantic (non-literal) spoiler review"
+    ],
+    "data": {
+      "manifest": "data/manifest.json",
+      "files": [
+        {
+          "file": "bbox.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/map?bbox=11.2510,43.7610,11.2710,43.7730",
+          "fetched_utc": "2026-10-12T05:34:21+00:00",
+          "bytes_uncompressed": 13819344,
+          "sha256_uncompressed": "0caa807c30da5180d793a58d6946f334256256683d89c527462ecfd5607409b2"
+        },
+        {
+          "file": "relation_1461712.osm.gz",
+          "url": "https://api.openstreetmap.org/api/0.6/relation/1461712/full",
+          "fetched_utc": "2026-10-12T05:34:22+00:00",
+          "bytes_uncompressed": 10161,
+          "sha256_uncompressed": "a9446054334dee776367106836547cd09b1d2ca851d3595ff2d5464028f2c188"
+        }
+      ],
+      "hash_check": "passed",
+      "licence": "ODbL 1.0",
+      "attribution": "© OpenStreetMap contributors"
+    },
+    "target_points": [
+      {
+        "stop": 3,
+        "lat": 43.7688,
+        "lon": 11.2557,
+        "source": "https://en.wikipedia.org/wiki/Loggiato_of_the_Uffizi",
+        "verified": false,
+        "note": "estimate: Cambi's Cellini statue is in a niche nearest the former Mint (https://michelangelobuonarrotietornato.com/2025/09/21/il-cellini-del-cambi-nella-loggia-degli-uffizi/), north part of the Uffizi court; exact niche position not confirmed"
+      }
+    ],
+    "waivers": [
+      {
+        "stop": 1,
+        "rule": "ticketed stops last",
+        "reason": "map test reproduces the Cellini's Florence route as written; the book's stop order is backlog E work"
+      }
+    ],
+    "route": {
+      "total_m": 2032.9,
+      "retrace_m": 0,
+      "avoid_steps": true,
+      "legs": [
+        {
+          "from": 1,
+          "to": 2,
+          "length_m": 317.5,
+          "crossings": [
+            {
+              "road": "crossing way",
+              "osm_way": "way/1316387888",
+              "crossing_tag": "marked",
+              "control": "controlled"
+            },
+            {
+              "road": "crossing way",
+              "osm_way": "way/773625393",
+              "crossing_tag": null,
+              "control": "unknown"
+            }
+          ]
+        },
+        {
+          "from": 2,
+          "to": 3,
+          "length_m": 15.4,
+          "crossings": []
+        },
+        {
+          "from": 3,
+          "to": 4,
+          "length_m": 314.3,
+          "crossings": []
+        },
+        {
+          "from": 4,
+          "to": 5,
+          "length_m": 1385.7,
+          "crossings": [
+            {
+              "road": "crossing way",
+              "osm_way": "way/769746259",
+              "crossing_tag": "traffic_signals",
+              "control": "controlled"
+            }
+          ]
+        }
+      ]
+    },
+    "landmarks_excluded": [
+      {
+        "name": "Piazza della Signoria",
+        "osm": "way/23298643",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Piazzale degli Uffizi",
+        "osm": "way/23298781",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Loggia dei Lanzi",
+        "osm": "way/43284457",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Palazzo del Bargello",
+        "osm": "way/43837065",
+        "reason": "is a stop's target"
+      },
+      {
+        "name": "Galleria degli Uffizi",
+        "osm": "way/477279033",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Ponte Vecchio",
+        "osm": "relation/5342094",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Piazza della Signoria",
+        "osm": "relation/20351217",
+        "reason": "holds a stop's target"
+      },
+      {
+        "name": "Lungarno Guglielmo Pecori Giraldi",
+        "osm": "road:Lungarno Guglielmo Pecori Giraldi",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Lungarno Benvenuto Cellini",
+        "osm": "road:Lungarno Benvenuto Cellini",
+        "reason": "matches secret term 'Benvenuto Cellini' for stop 4"
+      },
+      {
+        "name": "Lungarno Torrigiani",
+        "osm": "road:Lungarno Torrigiani",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Ponte Vecchio",
+        "osm": "road:Ponte Vecchio",
+        "reason": "matches secret term 'Ponte Vecchio' for stop 4"
+      },
+      {
+        "name": "Lungarno degli Acciaioli",
+        "osm": "road:Lungarno degli Acciaioli",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Lungarno della Zecca Vecchia",
+        "osm": "road:Lungarno della Zecca Vecchia",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Lungarno Anna Maria Luisa de' Medici",
+        "osm": "road:Lungarno Anna Maria Luisa de' Medici",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Lungarno degli Archibusieri",
+        "osm": "road:Lungarno degli Archibusieri",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Lungarno Generale Diaz",
+        "osm": "road:Lungarno Generale Diaz",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Lungarno Francesco Ferrucci",
+        "osm": "road:Lungarno Francesco Ferrucci",
+        "reason": "matches secret term 'Lungarno' for stop 5"
+      },
+      {
+        "name": "Piazzale degli Uffizi",
+        "osm": "road:Piazzale degli Uffizi",
+        "reason": "matches secret term 'Uffizi' for stop 3"
+      }
+    ],
+    "landmark_pool_size": 212,
+    "landmark_reach": [
+      {
+        "circle": 1,
+        "landmark": "CHIESA EVANGELICA DEI FRATELLI",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 2,
+        "landmark": "CORRIDOIO VASARIANO",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 4,
+        "landmark": "CORRIDOIO VASARIANO",
+        "ft_from_edge": 0
+      },
+      {
+        "circle": 5,
+        "landmark": "NUOVO PARCO MICHELANGELO",
+        "ft_from_edge": 0
+      }
+    ],
+    "panel_plan": {
+      "pages": 2,
+      "panels": [
+        {
+          "stops": [
+            1,
+            4
+          ],
+          "carry_in": null,
+          "scale_pt_per_m": 0.529,
+          "needed_pt_per_m": 0.424,
+          "circles_grown_ft": {}
+        },
+        {
+          "stops": [
+            5,
+            5
+          ],
+          "carry_in": 4,
+          "scale_pt_per_m": 0.21,
+          "needed_pt_per_m": 0.199,
+          "circles_grown_ft": {}
+        }
+      ]
+    },
+    "scale_bar_shared": 500,
+    "pages": [
+      {
+        "automated_checks": [
+          "labels placed without collision against labels, markers, route, areas, furniture and plate edge",
+          "label type floor 6.0 pt; no shrinking",
+          "geographic names matching secret terms suppressed before placement"
+        ],
+        "labels": {
+          "placed": [
+            {
+              "kind": "zone",
+              "text": "THE NAME ALONG / THE ARNO",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "NUOVO PARCO / MICHELANGELO",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "water",
+              "text": "ARNO",
+              "size_pt": 6.2
+            }
+          ],
+          "dropped": [],
+          "suppressed": []
+        },
+        "scale": {
+          "points_per_metre": 0.5291,
+          "extent_m": [
+            614,
+            610
+          ],
+          "ratio_at_print": "1:5,358"
+        },
+        "furniture": {
+          "scale_and_north": "top left, side by side"
+        },
+        "landmark_sets_tried": 1,
+        "search_nodes": 36,
+        "landmarks_chosen": [
+          {
+            "circle": 1,
+            "landmark": "Palazzo Borghese",
+            "osm": "relation/1598079",
+            "ft_from_edge": 0,
+            "score": 3.77,
+            "ranked_alternatives": [
+              "Palazzo Borghese",
+              "Palazzo Pazzi",
+              "Badia Fiorentina",
+              "Palazzo Vecchio",
+              "Palazzo Nonfinito",
+              "Palazzo Gondi"
+            ]
+          },
+          {
+            "circle": 2,
+            "landmark": "Palazzo Vecchio",
+            "osm": "relation/1461712",
+            "ft_from_edge": 0,
+            "score": 3.97,
+            "ranked_alternatives": [
+              "Palazzo Vecchio",
+              "Palazzo dei Veliti",
+              "Palazzo Gondi",
+              "Ex-Cinema Capitol",
+              "Loggia del Grano",
+              "Palazzo della Borsa"
+            ]
+          },
+          {
+            "circle": 4,
+            "landmark": "Chiesa di Santa Felicita",
+            "osm": "way/159394659",
+            "ft_from_edge": 245,
+            "score": 2.83,
+            "ranked_alternatives": [
+              "Chiesa di Santa Felicita",
+              "Chiesa di Santo Stefano al Ponte",
+              "Chiesa dei Santi Apostoli",
+              "Biblioteca di Palagio di parte Guelfa",
+              "Piazza del Limbo",
+              "Piazza del Pesce"
+            ]
+          }
+        ]
+      },
+      {
+        "automated_checks": [
+          "labels placed without collision against labels, markers, route, areas, furniture and plate edge",
+          "label type floor 6.0 pt; no shrinking",
+          "geographic names matching secret terms suppressed before placement"
+        ],
+        "labels": {
+          "placed": [
+            {
+              "kind": "zone",
+              "text": "THE NAME ALONG / THE ARNO",
+              "size_pt": 6.5
+            },
+            {
+              "kind": "landmark",
+              "text": "NUOVO PARCO / MICHELANGELO",
+              "size_pt": 6.0
+            },
+            {
+              "kind": "water",
+              "text": "ARNO",
+              "size_pt": 6.2
+            }
+          ],
+          "dropped": [],
+          "suppressed": []
+        },
+        "scale": {
+          "points_per_metre": 0.21,
+          "extent_m": [
+            1548,
+            1458
+          ],
+          "ratio_at_print": "1:13,495"
+        },
+        "furniture": {
+          "scale_and_north": "bottom left, side by side"
+        },
+        "landmark_sets_tried": 1,
+        "search_nodes": 6,
+        "landmarks_chosen": [
+          {
+            "circle": 5,
+            "landmark": "Nuovo Parco Michelangelo",
+            "osm": "way/26943112",
+            "ft_from_edge": 0,
+            "score": 2.24,
+            "ranked_alternatives": [
+              "Nuovo Parco Michelangelo",
+              "Il Giardino Dell'Iris",
+              "Via dei Bastioni",
+              "Via della Fornace",
+              "Viale Giuseppe Poggi",
+              "Giardino Regina Elena di Romania"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
