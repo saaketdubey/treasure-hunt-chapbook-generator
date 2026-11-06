@@ -6,7 +6,7 @@ This repository holds the generator: a skill that interviews the author about a 
 
 ## Status
 
-Draft, work in progress. The map, sourcing and riddle-review stages are complete and tested. The language, instruction and layout stages are still being developed, so the full-booklet pipeline should be read as a working baseline, not a finished tool. Nothing here has been through a final editorial review.
+Draft, work in progress. The map, sourcing, riddle-review and instruction stages are complete and tested. The language and layout stages are still being developed, so the full-booklet pipeline should be read as a working baseline, not a finished tool. Nothing here has been through a final editorial review.
 
 The three map tests are fixtures: they exist to prove the generator reproduces the same map from the same inputs, and to catch regressions. They are not published hunts.
 
@@ -24,6 +24,8 @@ The three map tests are fixtures: they exist to prove the generator reproduces t
 | `chapbook_skill/scripts/provenance.py` | Source and photograph records: every answer-page claim cites a source id, every image a licence record |
 | `chapbook_skill/scripts/verify_provenance.py` | Live checks before a build: source URLs fetched, Commons licences and authors compared, image files hashed |
 | `chapbook_skill/scripts/riddles.py` | Riddle review: rubric, locating scan on hints, cold-solver report |
+| `chapbook_skill/scripts/access.py` | Access records for ticketed and hours-limited stops: Before you go box, sealed access-links page, How to Play scan |
+| `chapbook_skill/scripts/textscan.py` | Information-timing scan: answer pages ask for nothing at the stop |
 | `chapbook_skill/scripts/riddle_pages.py` | Prints the cold-solver packet (riddle pages and map text only) and its report skeleton |
 | `chapbook_skill/templates/` | Example booklet spec and example map spec |
 | `chapbook_skill/assets/fonts/` | Six OFL-licensed fonts (Cormorant, EB Garamond, Source Serif 4) |
@@ -53,6 +55,8 @@ An optional café break marks one to three real, named places near the halfway l
 3. **Riddles are reviewed before rendering.** Each riddle carries its observable evidence, the action the reader performs, a decoy and an optional hint. A rubric is recorded pass or fail per item; a scan rejects hints that locate (street corners, addresses, "across from"); and a cold solver who has seen only the riddle pages and map text tries to name each stop. A stop named from its hint alone blocks.
 4. **The map marks the start, never the finish.** The start is a named street corner the engine picks outside every circle; the last stop ends the walk.
 5. **Overrides are printed.** Any waived check is recorded in the build record with its reason.
+6. **Access facts come from records.** A ticketed or hours-limited stop goes last and carries an access record from the venue's own page. How to Play gets a generated Before you go box that names stops by number only; the official links sit on a sealed page inside the back cover. Hand-written text that mentions tickets, hours or prices stops the build.
+7. **Hints are sealed, and each page is read at its moment.** Hints sit on their own page facing the spoiler divider, never on a riddle page. Answer pages are read after the walk, so text there that asks for something at the stop blocks the build unless it's written for a return visit.
 
 ## Examples
 

@@ -22,7 +22,9 @@ fields beside its stanzas, and the stanzas are built from them:
 
 - `evidence` — two or more observations a reader can make on the spot, each tagged `public`
   (visible from public ground at any hour) or `interior` (needs to be inside, allowed only where
-  the map stop's `access` is `ticketed` or `hours_limited`). Evidence is countable or pointable: a
+  the map stop's `access` is `ticketed` or `hours_limited` and going in is `required`). If the
+  riddle can be solved from outside, mark entry `optional` and keep every item public: a walker
+  who arrives after closing still finishes the stop. Evidence is countable or pointable: a
   number of windows, a carved animal, a missing half of a canopy, a plaque at knee height. "Georgian
   proportions" is not evidence; "three storeys and a rusticated ground floor" is. Historical facts
   the reader cannot see belong on the answer page, not in the riddle.
@@ -33,7 +35,10 @@ fields beside its stanzas, and the stanzas are built from them:
   (relative to the circle or the route, so the reader meets it without a detour), `why_wrong`
   (which piece of evidence it fails). A decoy that needs a walk, a ticket or an opening hour is
   not a decoy, it is a second stop.
-- `hint` — one or two sentences; see the hint rule below.
+- `hint` — one or two sentences; see the hint rule below. Hints print together on one sealed
+  hints page after the last riddle, so the riddle page carries no hint at all, only a pointer.
+  Write each hint to stand alone: a walker may read the whole page by accident, and nothing in
+  one hint should help with another stop.
 
 Register: plain, present tense, second person. One inversion per riddle (the famous doorway that
 is the wrong house, the grand room behind the plain wall); two make it a trick, none make it a
@@ -70,7 +75,10 @@ by a well-read reader is part of the pleasure, a giveaway is not.
 Two paragraphs. The first delivers the answer and its hard facts — dates, dimensions, maker,
 commission. The second is the turn: what the stop reveals about the thread that the first paragraph did
 not. Then two labelled blocks ("How to recognize it", "<Thread> connection") and one tinted "What to
-notice" well containing a single instruction the reader can carry out on the spot.
+notice" well. The walker reads the answer page after the hunt, so the notice looks back at what
+they saw ("The canopy you stood under stops abruptly") or forward to a return visit ("Next time you
+pass, count the lamps"), never at the spot now. The build stops on an on-site instruction in any
+post-hunt text (see Information timing).
 
 Numbers, spelled out in the prose where they read better, are the texture of these pages. So are
 inversions: the grandest room behind the plainest wall, the famous doorway that is the wrong house.
@@ -156,8 +164,11 @@ near each circle that a lost walker could type into a map app, and the circles t
    test that must stay fixed.
 7. **Café stop.** If the interview ticked Café stop, set `cafe_break: True`. The break names up to
    three real places just off the walk near halfway. Never hide food behind a riddle or a vague area.
-8. **Order.** Ticketed and hours-limited stops last. Avoid orders that double back past an earlier
-   stop: the build stops on retracing when `no_backtracking` is set, and names the legs.
+8. **Order.** Ticketed and hours-limited stops last, and among them any stop where going in is
+   required after any where it is optional. Write a fallback that keeps the walk worth doing if
+   the last stop is shut. Prefer orders that do not double back past an earlier
+   stop: `no_backtracking` steers later legs off streets already walked, and the build warns, naming
+   the legs, when more than 25 m is retraced anyway. The book makes no promise about it.
 9. **Units.** `"imperial"` for US readers (feet and miles), `"metric"` otherwise.
 10. **Notes.** Use placeholders for distance and time, so they always match the solved route. The
     settled wording: representation note "Drawn from OpenStreetMap data and simplified; north is up.
@@ -186,10 +197,49 @@ The map still needs human review: does the geography match the sources, does the
 real walk, and does the drawn geography itself give an answer away (a round junction under a fountain
 circle, a garden island under an obelisk circle)? The generator cannot judge semantic leaks.
 
+## Information timing
+
+Write each piece of text for the moment it is read.
+
+| Moment | Pages | What belongs there |
+| --- | --- | --- |
+| Pre-walk | cover, How to Play (with the Before you go box), trail map, acts, maker | the rules, the route, the thread, access by stop number |
+| On site | riddle pages, hints page | the riddle, then recognition help on the sealed hints page |
+| Post-hunt | spoiler divider, answer pages, the treasure, sources and credits | the answer, its facts, and looking back |
+| Any time | access-links page, inside the back cover | official links and stop names, read by choice |
+
+Two rules follow. Nothing pre-walk or on site names an answer (the spoiler scans). Nothing post-hunt
+asks the walker to do something at the stop: "Stand across the street" on an answer page arrives
+after they have left. Write it as what they saw or as a reason to return.
+
+## Access information
+
+Walkers need to know before they leave whether anything is ticketed or has opening hours, without
+the book telling them where the stops are. Three places hold it, each with one job:
+
+- **Before you go box** (How to Play): generated. Stop numbers, kind, entry, one-line summary,
+  checked date, fallback. Write the summary as the official page gives it ("Open daily to 8 p.m.,
+  from 7 a.m. on weekdays"), never with the venue's name, its street or anything a secret term
+  would catch. Write the fallback as an instruction ("come back another day for this one"), never
+  as a place ("read the plaque by the south door" locates the stop as surely as its name).
+- **Access-links page** (inside the back cover): generated. Names the stops and gives the official
+  URLs. It is the one deliberate early spoiler in the book, labelled as such, kept at the back so a
+  walker who has no need of it never meets it.
+- **Notes** (hand-written): everything else practical (footwear, toilets, accessibility, weather).
+  Never tickets, hours, prices or "free".
+
+Read the official page on the day you write the summary, and again before printing: the build
+warns after 30 days, and the record lists a human re-read as an unperformed check. Where the
+venue's own documents disagree (a printed guide with older hours), follow the current hours page
+and record the older figure as `weaker_claim`.
+
 ## Inspection before delivery
 
 Read every page of the rendered PDF as an image. Check for: text clipped by the frame, paragraphs
 overprinting each other, map labels that read ambiguously or sit nearer the wrong circle, a circle
 missing from a page where its stop appears, a café label far from any drawn route, an answer image
-squeezed to nothing, and long URLs running past the text column on the credits page. Fix the spec,
+squeezed to nothing, long URLs running past the text column on the credits page or the access-links
+page, a hint printed on a riddle page, the hints page facing a riddle instead of the divider, and a
+Before you go line that names, or narrows the place of, a stop, and answer-page text that still reads
+as an instruction for the spot (the timing scan matches phrasing, not meaning). Fix the spec,
 rebuild, and look again. Do not deliver a chapbook you have not seen rendered.

@@ -27,8 +27,14 @@ geographic terms and `scripts/mapgen.py` derives every position.
 
 `intro` (str), `mechanic` (str, the tinted rule box), `steps` (list[str], numbered), `checklist_title`
 (str), `checklist` (list[str], one per stop: `"Stop 1 — <riddle name>"`), `notes` (list[str]).
-Keep `notes` to 7 items or fewer; the page auto-shrinks type to fit and prints
-`!! how_to_play overflow` if it cannot.
+Keep `notes` to 7 items or fewer; the page auto-shrinks type to fit and the build stops if it
+cannot. The page also prints a generated **Before you go** box (from the stops' `access` records,
+below) between the checklist and the notes; it is not written in the spec.
+
+No hand-written How to Play string (intro, mechanic, steps, checklist, notes) may mention tickets,
+admission, booking, opening hours, closing, prices or "free". The build scans for them, the way the
+spoiler scan works, and stops on a hit: access facts come only from the records. Walking distance
+and time are fine ("an hour on foot"); the map page prints them anyway.
 
 ## `map` (schema v2)
 
@@ -51,7 +57,7 @@ stops, not navigate turn by turn. The old v1 fields (`blocks`, `bands`, `streets
 | `street_labels` | list[str] | optional. Street names to print, exact OSM names. `[]` prints none (the usual choice); omitted prints any that fit |
 | `frame` | dict | optional `{"bbox": [min_lon, min_lat, max_lon, max_lat]}` to lock the framing. Forces one page; every circle must fall inside it. Omit it: the engine frames and plans pages itself |
 | `data` | dict | `{"manifest": "data/manifest.json"}`, relative to the spec file. Created by `scripts/fetch_osm.py` |
-| `route` | dict | `mode` (`"foot"`), `avoid_steps` (bool, default true), `no_backtracking` (bool), optional `claimed_distance_m` |
+| `route` | dict | `mode` (`"foot"`), `avoid_steps` (bool, default true), `no_backtracking` (bool: a routing preference, not a claim), optional `claimed_distance_m` |
 | `representation_note` | str | printed under the legend; say what the map is and is not |
 | `route_note`, `mechanic_note` | str | captions, on the first and last map page. Placeholders: `{stops}`, `{distance_mi}`, `{distance_ft}`, `{distance_km}`, `{distance_m}`, `{minutes}`. Hard-coded numbers raise a warning |
 | `padding` | float | optional, default `0.07`; extra extent around route and circles when there is no `frame` |
@@ -88,6 +94,8 @@ What the generator does with these:
   are never used). With `no_backtracking`, later legs avoid streets already walked. Walking in and out
   of a stop down the same dead end, within its circle, is a visit, not a retrace. Measures total length
   and retracing, lists every major-road crossing, and flags legs that pass through another circle.
+- **Retracing.** More than 25 m of retracing warns and names the legs; it never blocks. The book
+  makes no promise about backtracking either way.
 - **Circles.** Each contains its target but is centred 30–55% of the radius away from it, in a direction
   chosen to keep circles apart. The route is drawn outside circles only, so no line ends on a target.
   Inside each circle every street and path is drawn in full over a light shading. Overlapping circles
@@ -136,11 +144,10 @@ What the generator does with these:
   term in title, notes or stop names, ticketed stop not last, circle below the 100 ft floor,
   overlapping circles, circle outside a locked frame, no legible page plan within 3 pages even with
   growth (one report lists every page and constraint with its fix), a circle with no landmark within
-  500 ft, claimed distance more than 15% off, retracing despite `no_backtracking` (names the legs), a
-  café break with no room for any café label, a stop name or landmark label with no clear position,
+  500 ft, claimed distance more than 15% off, a café break with no room for any café label, a stop name or landmark label with no clear position,
   legend or caption overflow.
 - **Warnings** (printed as `!! map warning`, recorded): each grown circle, unmarked or unknown
-  crossing data, retracing, legs passing through other circles, hard-coded numbers in notes,
+  crossing data, retracing over 25 m (names the legs), legs passing through other circles, hard-coded numbers in notes,
   unverified target points, a stop name placed beside its circle because it could not float onto
   the rim, no fully clear corner for the scale group.
 
@@ -165,15 +172,17 @@ exactly three), `closer`.
 
 ## `stops`
 
-List of `{"riddle": {...}, "answer": {...}}`, one per stop, in walking order.
+List of `{"riddle": {...}, "answer": {...}}`, one per stop, in walking order, plus an `access`
+record on every ticketed or hours-limited stop (Access, below).
 
 `riddle`: `name` (str, no answer in it), `stanzas` (**list of list[str]** — three stanzas, each a list of
-its own centred lines, so you control every line break), `hint` (str), `ornament` (str, kind below),
+its own centred lines, so you control every line break), `hint` (str; printed on the sealed hints
+page after the last riddle, never on the riddle page itself), `ornament` (str, kind below),
 and four data fields that are checked but not printed:
 
 | Field | Required | Notes |
 | --- | --- | --- |
-| `evidence` | yes, 2+ | `{"text": str, "where": "public" \| "interior"}`; `interior` only where the map stop's `access` is `ticketed` or `hours_limited` |
+| `evidence` | yes, 2+ | `{"text": str, "where": "public" \| "interior"}`; `interior` only where the map stop's `access` is `ticketed` or `hours_limited` and the stop's access `entry` is `required` |
 | `action` | yes | the one thing the reader does to finish the stop; it must produce what the answer page names |
 | `decoy` | yes | `{"name", "where", "why_wrong"}`; inside the circle or on the route, no ticket |
 | `review` | yes | the rubric, below |
@@ -212,9 +221,42 @@ its hint alone blocks; named from evidence passes and is recorded as easy. A mis
 report blocks unless top-level `riddles: {"skip_cold_solver": "<reason>"}` is set; the reason is
 recorded as an unperformed check.
 
+### Access
+
+The map stop's `access` gives the kind: `open_air`, `ticketed` or `hours_limited`. An open-air
+stop needs nothing more and must not carry a record. A ticketed or hours-limited stop carries an
+`access` record on its book stop:
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| `entry` | yes | `required` (the riddle is solved inside) or `optional` (solved from outside; going in is extra) |
+| `summary` | yes | one line, 110 characters or fewer: the hours or price as the official page gives them on the day you read it. Never the stop's name or a secret term |
+| `fallback` | yes | what the walker does if it is shut. Never the stop's name or a secret term |
+| `source` | yes | id of a `sources` record for the venue's own official page. Its `url` is printed and live-checked; its `accessed` date is printed as the checked date |
+
+The build stops on: a gated stop without a record or with a missing field; an unknown `entry`;
+extra fields (the URL and date belong in the source record); a summary over the limit; `optional`
+entry with any `interior` evidence; a required-entry stop followed by any other stop (required
+entry goes last); a record on an open-air stop; a box line containing a secret term. A `required`
+stop whose evidence is all public warns (consider `optional`). A source `accessed` more than 30
+days before the build warns: re-read the page and update the summary and date.
+
+The summary and fallback are claims like any other: they enter the ledger cited to the access
+source, so the source must say what the summary says.
+
+From the records the engine prints:
+
+- **Before you go box** (How to Play page): how many stops are open-air, then each gated stop by
+  number, with its kind, entry, summary, checked date and fallback, and a pointer to the last page.
+  Stops are never named; the cold-solver packet includes the box, so the reader checks it too.
+- **Access-links page** (inside the back cover, after the credits): headed "This page names the
+  stops", one entry per gated stop with its answer name, summary, fallback, checked date and the
+  official URL. Printed only when some stop is gated.
+
 `answer`: `name` (str), `subtitle_lines` (list[str], 2–4), `image` (filename inside `img/`; its
 record in `images` supplies the printed credit), `paras` (2 claim items), `blocks` (2 claim tuples),
-`notice` (one claim tuple, rendered in the tinted well).
+`notice` (one claim tuple, rendered in the tinted well), optional `timing_override` (str; see
+Information timing).
 
 A **claim item** is `{"text": str, "sources": [source_id, ...]}`; a **claim tuple** is
 `(heading, text, [source_id, ...])`. Every answer-page item must carry at least one source id, and
@@ -225,6 +267,18 @@ and are recorded as unsourced in the ledger. Schema v2 answer fields `credit` an
 
 The answer page measures itself and shrinks image and type until it fits; it prints
 `!! answer N overflow` if it cannot. If you see that, cut text rather than editing the engine.
+
+## Information timing
+
+Every page is read at one moment: pre-walk (cover, How to Play with the Before you go box, map,
+acts, maker), on site (riddle pages, hints page), post-hunt (spoiler divider, answer pages, the
+treasure, credits) or any time (the sealed access-links page). The build scans post-hunt text, the
+answer paragraphs, blocks and notice and the closing paragraphs and pull quote, and stops on a
+sentence that asks for something at the stop: one that opens with an instruction ("Look up",
+"Stand across the street", "Before you look up, look down") or points at the spot ("standing here",
+"in front of you", "before you leave"). A sentence written for a return visit ("Next time you
+pass, count the lamps") passes. `timing_override: "<reason>"` on an answer or on `closing` lets its
+flagged sentences through as warnings in the build record.
 
 ## `spoiler`, `closing`, `credits`
 

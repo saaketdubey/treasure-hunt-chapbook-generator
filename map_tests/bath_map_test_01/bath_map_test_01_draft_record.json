@@ -5,13 +5,13 @@
     "sha256": "75c3890a3b478da6d744a9f7cafc0d5ef620e725f3b7c5db29d1733d9bd960d2"
   },
   "code": {
-    "engine.py": "edfa05a689f27461d766cc85728b9c50cd976e277fe9eb08c9e422fdf98ea9aa",
-    "mapgen.py": "0c59f92b71e10c4de8c74c473a3da3d434e7bf567183edbb95c144dedd96a1aa",
+    "engine.py": "ad331f10f8bfe800ec066d470ac381f3cce1456c87c8b53d45181c3a49e4bca2",
+    "mapgen.py": "b3853979bcc5aa53266fc11ba494394572541517f4a3d94ff636bac256b616e6",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "bath_map_test_01_draft.pdf",
-    "sha256": "42464454197ec20d5b7f65e7cf3e737061fa9129e4cdbbb26af7df835027fd7f"
+    "sha256": "1dda7917ffc89af4d268698241cd8d52664a3e73546b1fc998753613f2f55c60"
   },
   "status": "draft — pending author review",
   "report": {
@@ -91,7 +91,7 @@
       "data files match manifest SHA-256",
       "ticketed / hours-limited stops come last",
       "every leg solved on the OSM walking network",
-      "retracing measured against no-backtracking claim",
+      "retracing measured and reported",
       "major-road crossings listed with crossing data",
       "hunt areas contain targets, are off-centre, do not overlap",
       "route-note figures derived from the solved route",

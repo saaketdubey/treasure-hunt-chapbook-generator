@@ -5,13 +5,13 @@
     "sha256": "978ccf3286ea71a3aed28b0883a43a436bb1436de3812e928af59c7ab86f1881"
   },
   "code": {
-    "engine.py": "edfa05a689f27461d766cc85728b9c50cd976e277fe9eb08c9e422fdf98ea9aa",
-    "mapgen.py": "0c59f92b71e10c4de8c74c473a3da3d434e7bf567183edbb95c144dedd96a1aa",
+    "engine.py": "ad331f10f8bfe800ec066d470ac381f3cce1456c87c8b53d45181c3a49e4bca2",
+    "mapgen.py": "b3853979bcc5aa53266fc11ba494394572541517f4a3d94ff636bac256b616e6",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "florence_map_test_02_draft.pdf",
-    "sha256": "ddecbe70b683a86d2f0e4130b436e48327cad94ae4b0c10635680c5bf7f9c5bb"
+    "sha256": "27d7a9212faf5a1ba7f789b1d31d81b0ae31c2bb8500d846d0b4b33284f27155"
   },
   "status": "draft — pending author review",
   "report": {
@@ -49,7 +49,7 @@
       "data files match manifest SHA-256",
       "ticketed / hours-limited stops come last",
       "every leg solved on the OSM walking network",
-      "retracing measured against no-backtracking claim",
+      "retracing measured and reported",
       "major-road crossings listed with crossing data",
       "hunt areas contain targets, are off-centre, do not overlap",
       "route-note figures derived from the solved route",

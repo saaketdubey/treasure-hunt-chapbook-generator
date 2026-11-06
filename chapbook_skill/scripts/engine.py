@@ -18,6 +18,12 @@ from reportlab.lib.utils import ImageReader
 from provenance import text_of, block_parts
 import provenance
 import riddles
+import access
+import textscan
+
+
+class LayoutError(Exception):
+    """A generated page cannot hold its text. The build stops rather than print clipped pages."""
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # Asset roots. FONT_DIR ships with the skill; IMG_DIR is the working project
@@ -376,6 +382,18 @@ class Book:
             self.left(x + 19, y, item, "Body", 9.2, self.p["ink"])
             y -= 14.2
         y -= 5
+        # generated Before you go box (block E): stops by number only, from access records
+        y = self.section_label(x, y, "Before you go")
+        bl = access.box_lines(self.s)
+        bs, blead = 8.2, 11.0
+        bh = sum(self.para_height(t, "Body", bs, W - 26, blead) for t in bl) + 3 * (len(bl) - 1)
+        c.setFillColor(tint(self.p["gold"], 0.88))
+        c.rect(x + 2, y - bh + 4, W - 4, bh + 6, stroke=0, fill=1)
+        c.setFillColor(self.p["gold"])
+        c.rect(x + 2, y - bh + 4, 2.4, bh + 6, stroke=0, fill=1)
+        for t in bl:
+            y = self.para(x + 14, y, t, "Body", bs, W - 26, blead) - blead - 3
+        y -= 9
         y = self.section_label(x, y, "Practical notes")
         # adaptive sizing so the notes always clear the frame
         avail = y - (M + 10)
@@ -398,7 +416,8 @@ class Book:
             c.restoreState()
             y = self.para(x + 17, y, note, "Body", ns, W - 20, nl) - ngap
         if y < M + 4:
-            print("  !! how_to_play overflow, y =", round(y, 1))
+            raise LayoutError(f"How to Play page overflows (y = {round(y, 1)}, floor {round(M + 4, 1)}): "
+                              f"shorten the intro, steps or notes")
         self.page_break()
 
     def trail_map(self):
@@ -536,6 +555,7 @@ class Book:
                           self.p["accent"], align="center") - 15
         if first:
             if getattr(model, "start", None):
+                self.printed_start = model.start["caption"]
                 y = self.para(M, y, model.start["caption"], "Body", 8.2, PW - 2 * M, 11.6,
                               self.p["accent"], align="center") - 11
             y = self.para(M, y, model.notes["route_note"], "Body", 8.2, PW - 2 * M, 11.6,
@@ -692,20 +712,63 @@ class Book:
         bx = (PW - bw) / 2
         c.rect(bx, by - 3, 9.5, 9.5, stroke=1, fill=0)
         self.left(bx + 18, by, "FOUND IT?", "Body", 8, self.p["accent2"], tracking=2.2)
-        # hint well
-        hy = M + 62
-        htxt = text_of(r["hint"])
-        hh = self.para_height(htxt, "Body", 8.4, PW - 2 * M - 40, 11.6)
+        # hint pointer (block E2): the hint itself is on the sealed hints page
+        hints_page = self._hints_page
+        hy = M + 50
         c.setFillColor(tint(self.p["accent2"], 0.92))
         c.setStrokeColor(tint(self.p["accent2"], 0.5))
         c.setLineWidth(0.6)
         c.setDash(2, 2)
-        c.rect(M + 4, hy - hh + 4, PW - 2 * M - 8, hh + 20, stroke=1, fill=1)
+        c.rect(M + 4, hy - 6, PW - 2 * M - 8, 22, stroke=1, fill=1)
         c.setDash()
         c.setFillColor(self.p["accent2"])
-        c.rect(M + 4, hy - hh + 4, 2.6, hh + 20, stroke=0, fill=1)
-        self.left(M + 16, hy + 10, "NEED A HINT?", "Body", 6.6, self.p["accent2"], tracking=1.2)
-        self.para(M + 16, hy - 1, htxt, "Body", 8.4, PW - 2 * M - 40, 11.6, self.p["ink"])
+        c.rect(M + 4, hy - 6, 2.6, 22, stroke=0, fill=1)
+        self.left(M + 16, hy + 2, "STUCK?", "Body", 6.6, self.p["accent2"], tracking=1.2)
+        self.left(M + 58, hy + 2, f"The hints are on page {hints_page}. Try the riddle first.",
+                  "Body", 8.2, self.p["ink"])
+        self.page_break()
+
+    def hints(self):
+        """One sealed page holding every hint, after the last riddle (block E2)."""
+        assert self.page_no + 1 == self._hints_page
+        self.background()
+        self.frame(heavy=True)
+        y = self.page_head("Open only if stuck", ["Hints"])
+        x, W = M, PW - 2 * M
+        c = self.c
+        y = self.para(x, y, "One hint per stop. Cover the others and read only the one you need.",
+                      self.display_i, 10.2, W, 13.6, self.p["accent2"], align="center") - 24
+        for i, st in enumerate(self.s["stops"], 1):
+            r = st["riddle"]
+            y = self.section_label(x, y, f"Stop {i} · {r['name']}")
+            y = self.para(x + 10, y, text_of(r["hint"]), "Body", 8.8, W - 14, 12.4) - 12.4 - 12
+        if y < M + 4:
+            raise LayoutError(f"hints page overflows (y = {round(y, 1)}): shorten the hints")
+        self.page_break()
+
+    def access_links(self):
+        """Sealed access-links page, last printed page before the back cover (block E1/E4)."""
+        rows = access.link_entries(self.s)
+        self.background()
+        self.frame(heavy=True)
+        y = self.page_head("This page names the stops", ["Checking on the Day"], title_size=20)
+        x, W = M, PW - 2 * M
+        y = self.para(x, y, "Open this page before you set out only if you need to confirm opening "
+                      "times. Everything else in the book keeps the stops unnamed.",
+                      self.display_i, 10.2, W, 13.6, self.p["accent2"], align="center") - 24
+        for e in rows:
+            y = self.section_label(x, y, f"Stop {e['stop']} · {e['name']}")
+            entry = "Going in is required." if e["entry"] == "required" else \
+                "Going in is optional; the riddle is solved from outside."
+            for t, font, size, col in (
+                    (f"{e['kind'].capitalize()}. {entry}", "Body", 8.4, self.p["ink"]),
+                    (f"{e['summary'].rstrip('.')}. Checked {e['checked']}.", "Body", 8.4, self.p["ink"]),
+                    (f"If it is shut: {e['fallback'].rstrip('.')}.", "Body", 8.4, self.p["ink"]),
+                    (f"{e['publisher']}: {e['url']}", "Body", 7.6, self.p["accent2"])):
+                y = self.para(x + 10, y, t, font, size, W - 14, size * 1.4) - size * 1.4 - 2
+            y -= 12
+        if y < M + 4:
+            raise LayoutError(f"access-links page overflows (y = {round(y, 1)})")
         self.page_break()
 
     def riddle_ornament(self, cx, cy, kind):
@@ -1068,6 +1131,30 @@ class Book:
             provenance.build_record(s, getattr(self, "spec_path", ""), self.out_path, ledger,
                                     p_warnings, live, errors=p_errors)
             raise provenance.ProvenanceError("provenance check failed:\n  " + "\n  ".join(p_errors))
+        # ---- access (block E): records, entry rule, notes scan, box spoiler scan ---
+        # before riddle review, so a bad access record fails before a cold read is spent
+        a_errors, a_warnings, a_report = access.validate(s)
+        if s.get("map", {}).get("version") == 2:
+            import mapgen
+            a_errors += mapgen.spoiler_scan([(f"before_you_go[{k}]", t) for k, t in
+                                             enumerate(access.box_lines(s))], s["map"]["stops"])
+        for w in a_warnings:
+            print(f"  !! access warning: {w}")
+        if a_errors:
+            provenance.build_record(s, getattr(self, "spec_path", ""), self.out_path, ledger,
+                                    p_warnings + a_warnings, live, errors=a_errors, access=a_report)
+            raise access.AccessError("access check failed:\n  " + "\n  ".join(a_errors))
+        # ---- information timing (block E: E3) ------------------------------------
+        t_errors, t_warnings, t_report = textscan.scan_timing(s)
+        for w in t_warnings:
+            print(f"  !! timing warning: {w}")
+        if t_errors:
+            provenance.build_record(s, getattr(self, "spec_path", ""), self.out_path, ledger,
+                                    p_warnings + a_warnings + t_warnings, live, errors=t_errors,
+                                    access=a_report, timing=t_report)
+            raise textscan.TextError("timing check failed:\n  " + "\n  ".join(t_errors))
+        a_warnings = a_warnings + t_warnings
+        self._timing = t_report
         # ---- riddle review (block D): fields, hint rule, rubric, cold solver -----
         r_errors, r_warnings, r_report = riddles.validate(s, SPEC_DIR)
         for w in r_warnings:
@@ -1077,6 +1164,8 @@ class Book:
                                     p_warnings + r_warnings, live, errors=r_errors,
                                     riddles=riddles.record_section(r_report))
             raise riddles.RiddleError("riddle review failed:\n  " + "\n  ".join(r_errors))
+        self._access = a_report
+        r_warnings = a_warnings + r_warnings
         self._prov = (ledger, p_warnings + r_warnings, live)
         self._riddles = riddles.record_section(r_report)
         if s.get("map", {}).get("version") == 2:
@@ -1095,18 +1184,47 @@ class Book:
         self.trail_map()
         self.acts()
         self.maker()
+        # The hints page must be a left-hand (even) page so it faces the spoiler divider,
+        # never the last riddle: in a folded booklet pages 2k and 2k+1 share a spread.
+        after_riddles = self.page_no + n + 1
+        self._hints_page = after_riddles if after_riddles % 2 == 0 else after_riddles + 1
         for i, r in enumerate(s["stops"], 1):
             self.riddle(i, r["riddle"], n)
+        if self.page_no + 1 != self._hints_page:
+            self.blank_with_ornament(s.get("blank_label", "Notes"))
+        self.hints()
         self.spoiler()
         for i, r in enumerate(s["stops"], 1):
             self.answer(i, r["answer"], n)
         self.closing()
         self.credits()
+        if access.gated(s):
+            # sealed access-links page lands on the inside back cover; the outside back is blank
+            while (self.page_no + 2) % 4 != 0:
+                self.blank_with_ornament(s.get("blank_label", "Notes"))
+            self.access_links()
+            self.blank_with_ornament("")
         while self.page_no % 4 != 0:
             self.blank_with_ornament(s.get("blank_label", "Notes"))
         self.c.save()
         ledger, warns, live = self._prov
         rec = provenance.build_record(s, getattr(self, "spec_path", ""), self.out_path, ledger,
-                                      warns, live, riddles=self._riddles)
+                                      warns, live, riddles=self._riddles, access=self._access,
+                                      timing=self._timing)
         print(f"record: {rec}")
         return self.page_no
+
+
+def printed_start_caption(spec):
+    """The start line exactly as the map page prints it: lay the map out on a throwaway canvas.
+    Circles that grow during layout can move the start, so the unlaid model is not enough."""
+    import io
+    import mapgen
+    book = Book(spec, io.BytesIO())
+    book.printed_start = None
+    try:
+        book.trail_map()
+    except mapgen.MapError:
+        return None
+    return book.printed_start
+

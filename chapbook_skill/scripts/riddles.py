@@ -23,6 +23,7 @@ import hashlib
 import json
 import os
 import re
+import access
 
 RUBRIC = {
     "hint_recognition_only": "the hint adds recognition only and does not locate (craft.md, hint rule)",
@@ -76,17 +77,21 @@ def _words(s):
 
 
 def start_caption(spec, spec_dir):
-    """The start line the map page prints, picked by mapgen from the map data; None when the
-    map is not built yet or cannot be loaded here."""
+    """The start line the map page prints, taken from a full layout of the map page (circles
+    that grow can move the start); None when the map is not built yet or cannot be laid out."""
     m = spec.get("map", {})
     if not spec_dir or m.get("placeholder") or m.get("version") != 2:
         return None
     try:
-        import mapgen
-        model = mapgen.MapModel(m, spec_dir, spec.get("slug", "map"))
+        import engine   # lazy: engine imports this module
+        old = engine.SPEC_DIR
+        engine.SPEC_DIR = spec_dir
+        try:
+            return engine.printed_start_caption(spec)
+        finally:
+            engine.SPEC_DIR = old
     except Exception:
         return None
-    return model.start["caption"] if getattr(model, "start", None) else None
 
 
 def packet_text(spec, spec_dir=None):
@@ -100,6 +105,10 @@ def packet_text(spec, spec_dir=None):
     out.append(hp.get("mechanic", ""))
     for n in hp.get("notes", []):
         out.append("· " + n)
+    out.append("")
+    out.append("Before you go (generated box on the same page):")
+    for ln in access.box_lines(spec):
+        out.append("· " + ln)
     start = start_caption(spec, spec_dir)
     if start:
         out.append("")
@@ -116,15 +125,19 @@ def packet_text(spec, spec_dir=None):
         for stanza in r.get("stanzas", []):
             out.append("")
             out.extend("    " + ln for ln in stanza)
-        out.append("")
-        out.append("    Hint: " + (r.get("hint") or ""))
+    out.append("")
+    out.append("=== Hints page (printed after the last riddle; each riddle page sends the reader "
+               "here only if stuck)")
+    for i, st in enumerate(spec.get("stops", []), 1):
+        out.append(f"    Stop {i}: " + (st["riddle"].get("hint") or ""))
     out.append("")
     out.append("Instructions for the reader: for each stop, write the specific place or object you "
                "believe is the answer and quote the line that made you sure. Then record the basis: "
-               "evidence if the stanzas would have got you there with the hint covered up; hint only "
+               "evidence if the stanzas would have got you there without the hints page; hint only "
                "if the hint alone would have named it and the stanzas would not; none if you could not "
                "say. The order you read them in does not matter. Then the intro check: does anything "
-               "outside the riddles — the intro, the notes, the circle names, the start line — identify "
+               "outside the riddles — the intro, the notes, the Before you go box, the circle names, "
+               "the start line — identify "
                "an answer or place it more precisely than a map circle with its ordinary street-map "
                "labels would? General knowledge of the city is not a leak: a famous thing inside a "
                "circle is still inside a circle. Answer with the single word No, or with Yes followed "

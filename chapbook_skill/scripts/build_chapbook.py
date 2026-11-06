@@ -44,7 +44,8 @@ def main():
     book.spec_path = spec_path
     try:
         pages = book.build()
-    except (engine.provenance.ProvenanceError, engine.riddles.RiddleError) as e:
+    except (engine.provenance.ProvenanceError, engine.riddles.RiddleError,
+            engine.access.AccessError, engine.textscan.TextError, engine.LayoutError) as e:
         print(f"!! {e}")
         return 1
     print(f"{out}: {pages} pages")

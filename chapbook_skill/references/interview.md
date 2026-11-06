@@ -34,7 +34,9 @@ interview sets difficulty; unset, riddles are written to one adult standard.
 
 A blank answer to question 4 means no constraints. Defaults that apply without asking: one ticketed
 or hours-limited finale is allowed, placed last, unless Free and outdoor is ticked; every route
-avoids queues and peak-crowd bottlenecks.
+avoids queues and peak-crowd bottlenecks. A gated finale is solved from outside (entry optional)
+where the riddle allows it; entry is required only when the thing to find is indoors. No extra
+question: the planner decides entry from the riddle and records it (`spec-schema.md`, Access).
 
 ## Round 2 — one question
 
@@ -66,16 +68,18 @@ propose the closest thread that does.
 
 ## Choosing stops
 
-- Walking order is fixed and one-directional. Prefer downhill or level; if the route must climb, say
-  so in the practical notes.
+- Walking order is fixed. Prefer downhill or level; if the route must climb, say so in the
+  practical notes.
 - Every stop must be a specific findable object or address, not a vague area.
-- Put any ticketed or hours-limited stop last so a closure cannot break the walk.
+- Put any ticketed or hours-limited stop last so a closure cannot break the walk, and write its
+  fallback (what to do if it is shut) at the same time.
 - Deliberately exclude the single most famous site if it is a detour or a queue, and mention it as an
   optional prologue in the practical notes instead.
 - Include at least one stop most visitors walk past, and at least one deliberate decoy — a nearby
   famous thing that is the wrong answer. The decoy belongs in the riddle and the answer page.
 - Check the current status of every stop before writing. Closures, restorations and changed hours are
-  the most common way one of these chapbooks goes wrong.
+  the most common way one of these chapbooks goes wrong. For a gated stop, read the venue's own
+  hours or tickets page and record it as a source; its access summary is written from that page.
 
 ## Sourcing and honesty
 

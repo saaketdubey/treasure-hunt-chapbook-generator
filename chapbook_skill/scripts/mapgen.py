@@ -5,7 +5,7 @@ Pipeline, in order:
   1. load cached OpenStreetMap data and verify it against its manifest
   2. resolve each stop's private target and public viewing way from OSM ids
   3. build a walking graph and solve the route leg by leg
-  4. validate the route (order, access, retracing, crossings, claims)
+  4. validate the route (order, access, crossings, claims); report retracing
   5. derive broad hunt areas that contain, but are not centred on, each target
   6. project real geometry (water, green, buildings, streets) into the map box
   7. place labels automatically: fixed type sizes, collision checks, priorities
@@ -49,7 +49,7 @@ FT = 0.3048
 MIN_AREA_RADIUS_M = 100 * FT          # 100 ft
 LANDMARK_REACH_M = 500 * FT            # every circle needs a landmark within this of its edge
 DEFAULT_AREA_RADIUS_M = 130 * FT       # 130 ft
-RETRACE_PENALTY = 3.0         # no_backtracking: cost multiplier on edges an earlier leg walked
+RETRACE_PENALTY = 3.0         # no_backtracking (routing preference): cost multiplier on edges an earlier leg walked
 CARRY_MIN_PT = 7.6 + 3.5      # a carried-in circle always shows as a ring around its disc
 CIRCLE_MAX_FT = 400           # circles may grow to this on pages that must print small
 MAX_MAP_PAGES = 3
@@ -558,13 +558,12 @@ class MapModel:
                         "avoid_steps": r_cfg.get("avoid_steps", True),
                         "legs": [{k: v for k, v in L.items() if k not in ("nodes", "xy")}
                                  for L in self.legs]}
-        if r_cfg.get("no_backtracking") and retrace > RETRACE_TOLERANCE_M:
+        # retracing is reported, never claimed: the book makes no backtracking promise (E6)
+        if retrace > RETRACE_TOLERANCE_M:
             pairs = sorted({tuple(sorted(lg)) for lg in used.values() if len(lg) > 1})
             which = ", ".join(f"legs {a + 1}→{a + 2} and {b + 1}→{b + 2}" for a, b, *_ in pairs)
-            rep["errors"].append(f"route: claims no backtracking but retraces {retrace:.0f} m "
-                                 f"({which}) even after routing around walked streets; reorder the stops")
-        elif retrace > RETRACE_TOLERANCE_M:
-            rep["warnings"].append(f"route: retraces {retrace:.0f} m; disclose it in the notes")
+            rep["warnings"].append(f"route: retraces {retrace:.0f} m ({which}); reorder the stops if "
+                                   f"that walk reads badly")
         for L in self.legs:
             for c in L["crossings"]:
                 if c["control"] in ("unmarked", "unknown"):
@@ -575,7 +574,7 @@ class MapModel:
         if claimed and abs(claimed - total) / total > 0.15:
             rep["errors"].append(f"route: claimed {claimed} m but solved route is {total:.0f} m")
         rep["automated_checks"] += ["every leg solved on the OSM walking network",
-                                    "retracing measured against no-backtracking claim",
+                                    "retracing measured and reported",
                                     "major-road crossings listed with crossing data"]
 
         self.units = map_spec.get("units", "metric")

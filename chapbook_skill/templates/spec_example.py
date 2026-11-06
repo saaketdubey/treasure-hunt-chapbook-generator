@@ -67,14 +67,8 @@ SPEC = {
             "Start: Wood Street  ·  Finish: Royal Crescent, via the Gravel Walk",
             "Roughly 1.5 km and about 30 minutes of walking — the shortest trail in the "
             "series, and the steepest, climbing steadily uphill",
-            "Five stops are outdoors and free. The sixth, No. 1 Royal Crescent, is a "
-            "ticketed museum and comes last, so you can decide when you get there",
-            "No. 1 Royal Crescent is usually open Tuesday to Sunday, 10.00 to 17.30, last "
-            "entry 16.30, and closed on Mondays outside school holidays. Check before you "
-            "travel",
-            "Stop 5, the Bath Assembly Rooms, is an exterior stop: the building has been "
-            "closed for a major restoration, so confirm the current position with the "
-            "National Trust if you hope to get inside",
+            # Never tickets, hours, prices or "free" here, and never a stop's name: the
+            # generated Before you go box prints access from each gated stop's `access` record.
             "Most stops are working residential streets. Look up, and keep off private steps "
             "and railings",
             "Wear comfortable shoes and keep a map app open for practical navigation",
@@ -219,8 +213,7 @@ SPEC = {
                     },
                     {
                         "text": "It is the quietest stop on the walk and the most easily missed, "
-                        "which is why it comes first. Standing here you can see the whole "
-                        "method in miniature: a modest terrace, deliberately matched to the "
+                        "which is why it comes first. The street shows the whole method in miniature: a modest terrace, deliberately matched to the "
                         "grand composition around the corner, extending one family's "
                         "architectural grammar into an ordinary address. Be careful with the "
                         "story, though. The listing records confirm the architect and the "
@@ -244,9 +237,7 @@ SPEC = {
                 ],
                 "notice": (
                     "What to notice",
-                    "Compare the door surrounds and window proportions here with the square "
-                    "you are about to enter. This is a rehearsal of the same score, played "
-                    "quietly.",
+                    "The door surrounds and window proportions here match the square you walked into next. It was a rehearsal of the same score, played quietly.",
                     ["wp_wood_street"],
                 ),
             },
@@ -422,9 +413,7 @@ SPEC = {
                 ],
                 "notice": (
                     "What to notice",
-                    "Look along the pavement as you climb. The street bends very slightly, "
-                    "so the Circus stays hidden until you are almost in it. That concealment "
-                    "is deliberate.",
+                    "The pavement you climbed bends very slightly, so the Circus stayed hidden until you were almost in it. That concealment is deliberate.",
                     ["wp_gay_street"],
                 ),
             },
@@ -589,8 +578,7 @@ SPEC = {
                         "put an ordinary front on an extraordinary room. The building was "
                         "gutted by bombing in 1942 and restored afterwards, and it has more "
                         "recently been closed for a major restoration by the National Trust, "
-                        "so for this hunt the façade is the answer. Check the current "
-                        "position before you plan an interior visit.",
+                        "so for this hunt the façade is the answer. The interior is for another day; check the current position first.",
                         "sources": [
                             "wp_assembly_rooms",
                             "nt_assembly_rooms",
@@ -621,14 +609,18 @@ SPEC = {
                 ],
                 "notice": (
                     "What to notice",
-                    "Stand across the street and try to guess the size of the room behind "
-                    "the wall. Count the windows of the upper storey — they are the only "
-                    "clue the outside gives you.",
+                    "From across the street the room behind the wall is impossible to size. Next time you pass, count the windows of the upper storey — they are the only clue the outside gives you.",
                     ["wp_assembly_rooms"],
                 ),
             },
         },
         {
+            "access": {  # map access is "ticketed": this record is required (spec-schema.md, Access)
+                "entry": "optional",
+                "summary": "<hours or price, one line, as the official page gives them; no stop name>",
+                "fallback": "<what to do if it is shut; an instruction, never a place>",
+                "source": "no1_visit",
+            },
             "riddle": {
                 "name": "The Great Curve",
                 "stanzas": [
@@ -652,6 +644,7 @@ SPEC = {
                 "ticketed house museum sits at the eastern end of the arc.",
                 "evidence": [
                     {"text": "The path delivers you to the shape the father never built: not a square, not a circle, but an open arc", "where": "public"},
+                    # all public, so the access record below says entry "optional"
                     {"text": "of more than a hundred columns and thirty front doors, looking out over grass at nothing but sky", "where": "public"},
                 ],
                 "action": "One house at the end has been furnished as it was. Find the curve that finished the century",
@@ -688,8 +681,7 @@ SPEC = {
                     {
                         "text": "The illusion is at its most brazen here. Wood the Younger sold "
                         "plots behind a single fixed façade, so buyers commissioned whatever "
-                        "they liked behind it. Walk around to the back and the unity "
-                        "collapses into a patchwork of different heights, windows and "
+                        "they liked behind it. Around the back the unity collapses into a patchwork of different heights, windows and "
                         "extensions — Queen Anne fronts and Mary-Anne backs. Number 1, at "
                         "the eastern end, is now a museum furnished as a wealthy Georgian "
                         "household, and it is the one interior on this walk you can reliably "
@@ -712,9 +704,7 @@ SPEC = {
                 ],
                 "notice": (
                     "What to notice",
-                    "Look along the arc and then look at the roofline. The front is one "
-                    "composition; the chimneys, dormers and rear walls behind it are thirty "
-                    "separate arguments.",
+                    "The arc you saw is one composition; the chimneys, dormers and rear walls behind it are thirty separate arguments.",
                     ["wp_royal_crescent"],
                 ),
             },
@@ -760,8 +750,7 @@ SPEC = {
         "title_lines": ["Sources & Credits"],
         "intro": "Every photograph in this chapbook is a freely licensed file from Wikimedia Commons, "
         "reproduced with its author and licence. Historical and practical detail is drawn "
-        "from the sources listed below. Opening hours and closures change — confirm the "
-        "Assembly Rooms and No. 1 Royal Crescent before you set out.",
+        "from the sources listed below.",
         "colophon": "Set in EB Garamond and Source Serif 4. Printed double-sided on letter paper, folded "
         "and stitched at the spine.",
     },
@@ -862,7 +851,7 @@ SPEC = {
             "publisher": "No. 1 Royal Crescent",
             "accessed": "YYYY-MM-DD",
             "verified": False,
-            "supports": "Opening days and times, last entry.",
+            "supports": "Opening days and times, last entry (the stop 6 access summary).",
         },
     ],
     "images": [

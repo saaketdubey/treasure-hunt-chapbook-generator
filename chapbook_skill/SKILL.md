@@ -4,7 +4,7 @@ description: "Produce a printable walking treasure-hunt chapbook for a city — 
 license: MIT
 compatibility: "Python with reportlab, Pillow and shapely. Fonts ship with the skill."
 metadata:
-  version: '1.7-draft'
+  version: '1.10-draft'
 ---
 
 # Treasure hunt chapbook
@@ -13,9 +13,13 @@ A chapbook is a small stitched booklet: a fixed walking route where the walking 
 challenge is solving a riddle at each stop. The reader gets riddles first, answers only after a spoiler
 divider. You write the content; `scripts/engine.py` owns every millimetre of layout.
 
-Page order, always: cover · how to play · trail map · three acts · the maker · one riddle page per stop ·
-spoiler divider · one answer page per stop · the treasure · sources and credits. The engine pads to a
-multiple of 4.
+Page order, always: cover · how to play (with the generated Before you go box) · trail map · three
+acts · the maker · one riddle page per stop · hints page · spoiler divider · one answer page per stop ·
+the treasure · sources and credits · access-links page (only when a stop is ticketed or hours-limited).
+The engine pads to a multiple of 4, puts the hints page on a left-hand page facing the divider, and
+puts the access-links page inside the back cover. Each page is read at one moment: before the walk
+(cover to the maker), on site (riddles, hints), after the hunt (divider to credits) or any time
+(access links); write for that moment (`references/craft.md`, Information timing).
 
 ## Procedure
 
@@ -40,7 +44,9 @@ multiple of 4.
    `templates/map_spec_example.py` and render it alone with `scripts/build_map.py` until it builds.
 6. **Write the spec.** Copy `templates/spec_example.py` into the working directory and replace its
    content, pasting in the map from step 5 and the records from step 3. Every answer paragraph,
-   block and notice names the source ids it rests on. Read `references/spec-schema.md` for every
+   block and notice names the source ids it rests on. Give every ticketed or hours-limited stop an
+   `access` record (entry, summary, fallback, official source) from the venue's own page, read on
+   the day you write it (`references/spec-schema.md`, Access). Read `references/spec-schema.md` for every
    field, and `references/craft.md` before writing any riddle, answer page, or palette.
 7. **Review the riddles.** Fill each riddle's `evidence`, `action`, `decoy` and `review` rubric
    (`references/spec-schema.md`, Riddle review). Print the cold-solver packet with
@@ -56,9 +62,13 @@ multiple of 4.
    path and page count, and writes `<out>_record.json`: the claim-to-source ledger, the live checks,
    warnings and any unperformed checks. The build stops, without a PDF, on a claim with no source,
    a source no claim cites, an image without a verified record, a stale or missing check file, or a
-   hand-written credits list; and on a riddle missing its data fields, a hint that locates, a failed
-   rubric item without an override, or a missing, stale or hint-solved cold-solver report. Any
-   `!! ... overflow` line means cut text; do not edit the engine to fit.
+   hand-written credits list; on a gated stop without a complete access record, optional entry with
+   interior evidence, a required-entry stop that is not last, a box line that names a stop, or
+   How to Play text that mentions tickets, hours, prices or "free"; on answer or closing text that
+   asks for something at the stop; and on a riddle missing its data fields, a hint that locates, a failed
+   rubric item without an override, or a missing, stale or hint-solved cold-solver report. A
+   generated page that overflows (How to Play, hints, access links) also stops the build; shorten
+   the text, do not edit the engine to fit. An access record checked more than 30 days ago warns.
 10. **Inspect every page** of the rendered PDF as an image, fix the spec, and rebuild until clean. The
    inspection checklist is at the end of `references/craft.md`. The map places its own labels and
    blocks the build on collisions, spoilers or a circle without a nearby landmark; review its record
@@ -85,7 +95,11 @@ nothing wrong.
 - Three severities. Automated checks block the build. A blocked check may be overridden only with an
   `override` reason in the record, which prints in the build record. Reading the sources, judging
   factual support and matching image to record are human checks and stay with the author.
-- Any ticketed or hours-limited stop goes last, with a "check before you travel" practical note.
+- Any ticketed or hours-limited stop goes last. Access facts come only from its `access` record:
+  the Before you go box names stops by number, never by name; the official links sit on the sealed
+  access-links page inside the back cover. Hand-written text never mentions tickets, hours or prices.
+- Hints live on the sealed hints page, never on a riddle page; each riddle page only points to it.
+- Answer pages are read after the walk: "What to notice" looks back or ahead to a return visit.
 - Food never sits behind a riddle: the café break names real places outright and is not a stop.
 
 ## Engine notes
@@ -94,6 +108,7 @@ nothing wrong.
 - `display_font` must be `"Cormorant"` or `"Garamond"`.
 - `para()` returns the baseline of its last line, so advance by leading plus a small gap after it.
 - The how-to-play notes list and the answer pages auto-shrink to fit; keep notes to 7 items or fewer.
+  The How to Play page now also carries the Before you go box, so notes have less room than before.
 - Extend the engine only to add a new riddle ornament shape, or as an approved backlog change. Layout
   changes affect every book in the series. Map generation lives in `scripts/mapgen.py` (schema v2,
   bearings style). After any map change, `map_tests/check_failures.py` in the project repo must

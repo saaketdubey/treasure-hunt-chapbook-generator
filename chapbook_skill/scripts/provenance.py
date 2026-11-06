@@ -97,6 +97,12 @@ def collect_claims(spec):
         add(f"maker.facts[{k}]", item, False)
     for n, st in enumerate(spec.get("stops", []), 1):
         r, a = st["riddle"], st["answer"]
+        acc = st.get("access")
+        if isinstance(acc, dict):
+            # block E: the access summary is a changeable fact; its official page is the source
+            add(f"stops[{n}].access",
+                {"text": f"{acc.get('summary', '')} If shut: {acc.get('fallback', '')}",
+                 "sources": [acc["source"]] if acc.get("source") else []}, True)
         if "hint" in r:
             add(f"stops[{n}].riddle.hint", r["hint"], False)
         for k, p in enumerate(a.get("paras", [])):
@@ -319,7 +325,8 @@ def strip_scheme(url):
 
 # ---------------------------------------------------------------- record
 
-def build_record(spec, spec_path, out_pdf, ledger, warnings, live_report, errors=None, riddles=None):
+def build_record(spec, spec_path, out_pdf, ledger, warnings, live_report, errors=None, riddles=None,
+                 access=None, timing=None):
     def h(p):
         return hashlib.sha256(open(p, "rb").read()).hexdigest() if p and os.path.exists(p) else None
     rec = {
@@ -335,6 +342,8 @@ def build_record(spec, spec_path, out_pdf, ledger, warnings, live_report, errors
         "ledger": ledger,
         "live_checks": live_report,
         "riddles": riddles,
+        "access": access,
+        "timing": timing,
         "automated_checks": [
             "record fields present, ids well formed and unique",
             "URL syntax on every source and image URL",
@@ -344,6 +353,11 @@ def build_record(spec, spec_path, out_pdf, ledger, warnings, live_report, errors
             "every answer image has a record and a file on disk",
             "hand-written credits and credit lines refused",
             "live-check report present and not stale (see live_checks)",
+            "access records: gated stops carry entry, summary, fallback and an official source; "
+            "optional entry has public evidence only; required-entry stops last; How to Play "
+            "text free of tickets, hours, prices and 'free'; checked date not stale (warns)",
+            "information timing: post-hunt text (answers, treasure) asks for nothing at the stop "
+            "unless written for a return visit",
         ],
         "unperformed_checks": [
             "whether each source actually supports the claim it is cited for (human: read the "
@@ -351,6 +365,10 @@ def build_record(spec, spec_path, out_pdf, ledger, warnings, live_report, errors
             "whether the photograph shows the thing the answer names (human: compare image to "
             "its Commons page and to the stop)",
             "whether a weaker-claim note changed the prose as it should have (human)",
+            "whether each access summary still matches its official page on the day of the "
+            "walk (human: re-read the page before printing)",
+            "whether post-hunt text the timing scan passed still reads as looking back (human: "
+            "the scan matches phrasing, not meaning)",
         ],
     }
     path = os.path.splitext(out_pdf)[0] + "_record.json"
