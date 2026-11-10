@@ -32,7 +32,7 @@ from shapely.geometry import (LineString, MultiLineString, MultiPolygon, Point,
 from shapely.ops import linemerge, unary_union
 from shapely import affinity
 
-MAPGEN_VERSION = "2.1.0-draft.1"
+MAPGEN_VERSION = "2.1.0-draft.2"
 
 # Type floors (points). Labels are never set below these; they are dropped or
 # the build fails instead.
@@ -541,7 +541,7 @@ class MapModel:
         # walked by consecutive legs within that stop's search radius of its target are exempt
         def _rad(st):
             return float(st["area_radius_ft"]) * FT if "area_radius_ft" in st else \
-                float(st.get("area_radius_m", DEFAULT_AREA_RADIUS_M))
+                DEFAULT_AREA_RADIUS_M
 
         def _visit(e, legs):
             if len(legs) != 2 or abs(max(legs) - min(legs)) != 1:
@@ -570,16 +570,22 @@ class MapModel:
                     rep["warnings"].append(
                         f"route: leg {L['from']}→{L['to']} crosses {c['road']} "
                         f"with {c['control']} crossing data; check on site")
-        claimed = r_cfg.get("claimed_distance_m")
-        if claimed and abs(claimed - total) / total > 0.15:
-            rep["errors"].append(f"route: claimed {claimed} m but solved route is {total:.0f} m")
+        if "claimed_distance_m" in r_cfg:
+            rep["errors"].append("route: `claimed_distance_m` is retired; give the claim in feet "
+                                 "as `claimed_distance_ft`")
+        claimed = r_cfg.get("claimed_distance_ft")
+        if claimed and abs(claimed * FT - total) / total > 0.15:
+            rep["errors"].append(f"route: claimed {claimed} ft but solved route is "
+                                 f"{total / FT:.0f} ft")
         rep["automated_checks"] += ["every leg solved on the OSM walking network",
                                     "retracing measured and reported",
                                     "major-road crossings listed with crossing data"]
 
-        self.units = map_spec.get("units", "metric")
-        if self.units not in ("metric", "imperial"):
-            raise MapError(f"unknown units {self.units!r}")
+        # every book uses imperial units (feet and miles); it is not a per-book choice
+        self.units = map_spec.get("units", "imperial")
+        if self.units != "imperial":
+            raise MapError(f"units {self.units!r} not supported: every book uses imperial units "
+                           "(feet and miles)")
         self.numbers = list(range(1, len(stops) + 1))
         self.ghosts = set()
         # shared circles: a stop may share the previous stop's circle when the two are steps apart
@@ -603,8 +609,7 @@ class MapModel:
                         f"route: leg {L['from']}→{L['to']} passes through area {j} {when}")
         rep["automated_checks"].append("hunt areas contain targets, are off-centre, do not overlap")
 
-        facts = {"distance_km": f"{total/1000:.1f}", "distance_m": f"{round(total, -1):.0f}",
-                 "distance_mi": f"{total/1609.344:.1f}", "distance_ft": f"{round(total / FT, -1):.0f}",
+        facts = {"distance_mi": f"{total/1609.344:.1f}", "distance_ft": f"{round(total / FT, -1):.0f}",
                  "minutes": f"{max(5, int(5 * round(total / 1000 / WALK_KMH * 60 / 5)))}",
                  "stops": str(len(stops))}
         self.facts = facts
@@ -970,10 +975,13 @@ class MapModel:
                     rep["errors"].append(f"area {i}: target outside its shared circle")
                 continue
             members = [k for k in range(len(stops)) if self.group[k] == i - 1]
+            if "area_radius_m" in st:
+                rep["errors"].append(f"area {i}: `area_radius_m` is retired; give the radius in "
+                                     "feet as `area_radius_ft`")
             if "area_radius_ft" in st:
                 r = float(st["area_radius_ft"]) * FT
             else:
-                r = float(st.get("area_radius_m", DEFAULT_AREA_RADIUS_M))
+                r = DEFAULT_AREA_RADIUS_M
             if r < MIN_AREA_RADIUS_M - 1e-6:
                 rep["errors"].append(f"area {i}: radius {r / FT:.0f} ft ({r:.0f} m) below the "
                                      f"100 ft ({MIN_AREA_RADIUS_M:.1f} m) floor")

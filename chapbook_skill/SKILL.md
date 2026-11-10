@@ -4,7 +4,7 @@ description: "Produce a printable walking treasure-hunt chapbook for a city — 
 license: MIT
 compatibility: "Python with reportlab, Pillow and shapely. Fonts ship with the skill."
 metadata:
-  version: '1.10-draft'
+  version: '1.12-draft'
 ---
 
 # Treasure hunt chapbook
@@ -73,7 +73,7 @@ puts the access-links page inside the back cover. Each page is read at one momen
    inspection checklist is at the end of `references/craft.md`. The map places its own labels and
    blocks the build on collisions, spoilers or a circle without a nearby landmark; review its record
    of page plan, grown circles, landmarks, cafés, crossings and warnings.
-11. **Deliver** the PDF with `share_file`, named with the book's full title and subtitle, together
+11. **Deliver** the PDF, named with the book's full title and subtitle, together
     with its `_record.json`.
 
 Steps 9 and 10 repeat. You are done when you have looked at every page of the final render and found
@@ -81,6 +81,8 @@ nothing wrong.
 
 ## Non-negotiables
 
+- Every book is written in American English and uses imperial units (feet and miles). Neither is a
+  per-book choice; do not adapt them to the place or the reader.
 - A riddle page never reveals its own answer — not in its name, stanzas, ornament, hint, or map label.
   The map gives order, a circle per stop and nearby landmarks only.
 - Every factual claim names its source ids, and every source is a record with a full URL, an access

@@ -10,6 +10,11 @@ Before rendering, reread every riddle page against the corresponding answer page
 noun, dedication date, sculptor's name, or building name that gives it away. Street names in the
 optional hint are acceptable; the answer's own name is not.
 
+## Language and units
+
+Every book is written in American English and uses imperial units (feet and miles). Both are
+fixed for every book. Do not adapt spelling or units to the place or to the reader.
+
 ## Riddles
 
 Three stanzas, each a list of centred lines of roughly equal length (under about 48 characters so
@@ -168,8 +173,9 @@ near each circle that a lost walker could type into a map app, and the circles t
    required after any where it is optional. Write a fallback that keeps the walk worth doing if
    the last stop is shut. Prefer orders that do not double back past an earlier
    stop: `no_backtracking` steers later legs off streets already walked, and the build warns, naming
-   the legs, when more than 25 m is retraced anyway. The book makes no promise about it.
-9. **Units.** `"imperial"` for US readers (feet and miles), `"metric"` otherwise.
+   the legs, when more than about 80 ft is retraced anyway. The book makes no promise about it.
+9. **Units.** Imperial (feet and miles) in every book. It is not a choice: any other value stops
+    the build.
 10. **Notes.** Use placeholders for distance and time, so they always match the solved route. The
     settled wording: representation note "Drawn from OpenStreetMap data and simplified; north is up.
     For getting your bearings between riddle stops; use a map app for turn-by-turn directions.";

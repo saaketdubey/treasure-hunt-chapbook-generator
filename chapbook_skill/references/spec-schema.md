@@ -50,16 +50,16 @@ stops, not navigate turn by turn. The old v1 fields (`blocks`, `bands`, `streets
 | `style` | str | optional, `"bearings"`, the only supported value. The retired `"detailed"` style stops the build |
 | `purpose` | str | `"orientation"` |
 | `title` | str | page title; scanned for secret terms. Long titles shrink to fit the page |
-| `units` | str | `"imperial"` (feet and miles) or `"metric"`, default `"metric"`. Use imperial for US readers |
+| `units` | str | `"imperial"` (feet and miles): the only supported value, and the default. Any other value stops the build |
 | `landmarks` | `"auto"` or list | optional, default `"auto"`: the engine picks a named landmark near every circle. A list pins them by hand (see below) |
 | `landmark_exclude` | list[str] | optional. Names never to use as automatic landmarks |
 | `cafe_break` | bool | optional, default false. Set true when the interview ticked Café stop |
 | `street_labels` | list[str] | optional. Street names to print, exact OSM names. `[]` prints none (the usual choice); omitted prints any that fit |
 | `frame` | dict | optional `{"bbox": [min_lon, min_lat, max_lon, max_lat]}` to lock the framing. Forces one page; every circle must fall inside it. Omit it: the engine frames and plans pages itself |
 | `data` | dict | `{"manifest": "data/manifest.json"}`, relative to the spec file. Created by `scripts/fetch_osm.py` |
-| `route` | dict | `mode` (`"foot"`), `avoid_steps` (bool, default true), `no_backtracking` (bool: a routing preference, not a claim), optional `claimed_distance_m` |
+| `route` | dict | `mode` (`"foot"`), `avoid_steps` (bool, default true), `no_backtracking` (bool: a routing preference, not a claim), optional `claimed_distance_ft` |
 | `representation_note` | str | printed under the legend; say what the map is and is not |
-| `route_note`, `mechanic_note` | str | captions, on the first and last map page. Placeholders: `{stops}`, `{distance_mi}`, `{distance_ft}`, `{distance_km}`, `{distance_m}`, `{minutes}`. Hard-coded numbers raise a warning |
+| `route_note`, `mechanic_note` | str | captions, on the first and last map page. Placeholders: `{stops}`, `{distance_mi}`, `{distance_ft}`, `{minutes}`. Hard-coded numbers raise a warning |
 | `padding` | float | optional, default `0.07`; extra extent around route and circles when there is no `frame` |
 | `labels` | dict | optional `{"suppress": [str, ...]}`: extra names never to print |
 | `stops` | list | one per stop, in walking order, same count as the book's `stops` |
@@ -85,7 +85,7 @@ Each `map.stops` item:
 | `access` | str | `open_air`, `ticketed` or `hours_limited`. Ticketed and hours-limited stops must come last |
 | `order_waiver` | str | map tests only: reason a ticketed stop is not last. A full book refuses it |
 | `shares_area_with` | int | optional: the previous stop's number, when two targets are steps apart and share one circle |
-| `area_radius_ft` | float | optional circle radius, sized to the search. Default 130 ft, floor 100 ft. `area_radius_m` is accepted for metric specs |
+| `area_radius_ft` | float | optional circle radius, sized to the search. Default 130 ft, floor 100 ft |
 
 What the generator does with these:
 
@@ -94,7 +94,7 @@ What the generator does with these:
   are never used). With `no_backtracking`, later legs avoid streets already walked. Walking in and out
   of a stop down the same dead end, within its circle, is a visit, not a retrace. Measures total length
   and retracing, lists every major-road crossing, and flags legs that pass through another circle.
-- **Retracing.** More than 25 m of retracing warns and names the legs; it never blocks. The book
+- **Retracing.** More than about 80 ft (25 m) of retracing warns and names the legs; it never blocks. The book
   makes no promise about backtracking either way.
 - **Circles.** Each contains its target but is centred 30–55% of the radius away from it, in a direction
   chosen to keep circles apart. The route is drawn outside circles only, so no line ends on a target.
@@ -116,7 +116,7 @@ What the generator does with these:
   landmark within 500 ft of every circle's edge. Different inputs can give different landmarks; the
   same inputs and data always give the same map.
 - **Start (automatic).** The corner of two named streets within 500 ft of circle 1's edge, outside every
-  circle (by 30 m), inside the route's padded extent and clear of every stop's secret terms; corners of
+  circle (by about 100 ft), inside the route's padded extent and clear of every stop's secret terms; corners of
   two main streets first, then the nearest. Drawn as a hollow S disc with the label "Start", a legend entry
   and the caption "Start: A and B" on the first map page; never a leg. The report records it under
   `start`. No corner found is an error; a corner that moves after circles grow is a warning that the
@@ -147,7 +147,7 @@ What the generator does with these:
   500 ft, claimed distance more than 15% off, a café break with no room for any café label, a stop name or landmark label with no clear position,
   legend or caption overflow.
 - **Warnings** (printed as `!! map warning`, recorded): each grown circle, unmarked or unknown
-  crossing data, retracing over 25 m (names the legs), legs passing through other circles, hard-coded numbers in notes,
+  crossing data, retracing over about 80 ft (names the legs), legs passing through other circles, hard-coded numbers in notes,
   unverified target points, a stop name placed beside its circle because it could not float onto
   the rim, no fully clear corner for the scale group.
 

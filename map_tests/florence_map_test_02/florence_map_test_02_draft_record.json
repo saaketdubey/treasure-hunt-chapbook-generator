@@ -1,21 +1,21 @@
 {
-  "generator": "2.1.0-draft.1",
+  "generator": "2.1.0-draft.2",
   "spec": {
     "path": "map_spec.py",
     "sha256": "978ccf3286ea71a3aed28b0883a43a436bb1436de3812e928af59c7ab86f1881"
   },
   "code": {
     "engine.py": "ad331f10f8bfe800ec066d470ac381f3cce1456c87c8b53d45181c3a49e4bca2",
-    "mapgen.py": "b3853979bcc5aa53266fc11ba494394572541517f4a3d94ff636bac256b616e6",
+    "mapgen.py": "0a85173aea79ed74858e0bed7a0546f76566dbfcf4846fb856483e4275a440d7",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "florence_map_test_02_draft.pdf",
-    "sha256": "27d7a9212faf5a1ba7f789b1d31d81b0ae31c2bb8500d846d0b4b33284f27155"
+    "sha256": "8ec57cfce9c373561ff071fa671b83c8c4773101c11cc20dfed7a3156bffa8c1"
   },
   "status": "draft — pending author review",
   "report": {
-    "generator": "2.1.0-draft.1",
+    "generator": "2.1.0-draft.2",
     "errors": [],
     "warnings": [
       "stop 3: target position given by coordinates and not verified on site; the circle may not contain the target",

@@ -1,21 +1,21 @@
 {
-  "generator": "2.1.0-draft.1",
+  "generator": "2.1.0-draft.2",
   "spec": {
     "path": "map_spec.py",
     "sha256": "75c3890a3b478da6d744a9f7cafc0d5ef620e725f3b7c5db29d1733d9bd960d2"
   },
   "code": {
     "engine.py": "ad331f10f8bfe800ec066d470ac381f3cce1456c87c8b53d45181c3a49e4bca2",
-    "mapgen.py": "b3853979bcc5aa53266fc11ba494394572541517f4a3d94ff636bac256b616e6",
+    "mapgen.py": "0a85173aea79ed74858e0bed7a0546f76566dbfcf4846fb856483e4275a440d7",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "bath_map_test_01_draft.pdf",
-    "sha256": "1dda7917ffc89af4d268698241cd8d52664a3e73546b1fc998753613f2f55c60"
+    "sha256": "9f4d7b5607556266f2176f96caac00e8eca7895223e3e5d11c4aa2fc14d56809"
   },
   "status": "draft — pending author review",
   "report": {
-    "generator": "2.1.0-draft.1",
+    "generator": "2.1.0-draft.2",
     "errors": [],
     "warnings": [
       "route: leg 2→3 crosses crossing way with unmarked crossing data; check on site",

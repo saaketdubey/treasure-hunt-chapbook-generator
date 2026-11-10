@@ -21,8 +21,8 @@ At the end you'll get a PDF booklet to print or read on your phone, with a trail
 2. **Thread** — "What should the hunt follow?" Offer the four thread types below as options,
    strongest first, each with a one-line example. The place is not known yet, so use examples from
    other cities (Bernini in Rome; wool, glass or iron). Free text is accepted.
-3. **Walk length** — "How long should the walk be?" Options: 4 stops / short (~1 km, 30 min) ·
-   6 stops / standard (~1.5–3 km, 45–60 min) · 8 stops / long (half a day).
+3. **Walk length** — "How long should the walk be?" Options: 4 stops / short (about half a mile, 30 min) ·
+   6 stops / standard (about 1–2 miles, 45–60 min) · 8 stops / long (half a day).
 4. **Include or avoid** — "Anything the walk should include or avoid?" Multi-select; say that
    leaving it blank means none. Options: Free and outdoor (no tickets or opening hours) · Easy
    walking (no steep climbs or stairs) · Kid-friendly (riddles children can solve) · Café stop (a
