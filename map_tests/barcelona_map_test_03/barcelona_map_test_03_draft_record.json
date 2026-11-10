@@ -1,21 +1,21 @@
 {
-  "generator": "2.1.0-draft.1",
+  "generator": "2.1.0-draft.2",
   "spec": {
     "path": "map_spec.py",
     "sha256": "03ba84e9bea2f6a1131fd6fb7635512122fdc03b5a0c08f3a9793054f540ef9b"
   },
   "code": {
     "engine.py": "ad331f10f8bfe800ec066d470ac381f3cce1456c87c8b53d45181c3a49e4bca2",
-    "mapgen.py": "b3853979bcc5aa53266fc11ba494394572541517f4a3d94ff636bac256b616e6",
+    "mapgen.py": "0a85173aea79ed74858e0bed7a0546f76566dbfcf4846fb856483e4275a440d7",
     "build_map.py": "a5b2f08bcb7b2dfedb9f4b1c506c20ff271045e4b8ca3ba5b53ba0406f553aec"
   },
   "output": {
     "pdf": "barcelona_map_test_03_draft.pdf",
-    "sha256": "6b1c1467da205d725cf95901b132dd727b11e1e542440af30c2df7e45e3e75e8"
+    "sha256": "3438d611f45d57adfaf3317d53880f62af326ff7f340a8b6cd828ca7564c762f"
   },
   "status": "draft — pending author review",
   "report": {
-    "generator": "2.1.0-draft.1",
+    "generator": "2.1.0-draft.2",
     "errors": [],
     "warnings": [
       "route: leg 2→3 crosses crossing way with unknown crossing data; check on site",

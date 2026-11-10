@@ -79,7 +79,12 @@ CASES = [
     ("ticketed stop not last", m(lambda mp: mp["stops"][1].__setitem__("access", "ticketed")), 'is ticketed but is not the last'),
     ("area radius below floor", m(lambda mp: mp["stops"][0].__setitem__("area_radius_ft", 60)), 'below the 100 ft'),
     ("overlapping areas", m(lambda mp: [st.__setitem__("area_radius_ft", 300) for st in mp["stops"]]), 'overlap'),
-    ("claimed distance contradicts route", m(lambda mp: mp["route"].__setitem__("claimed_distance_m", 1500)), 'claimed 1500 m'),
+    ("claimed distance contradicts route", m(lambda mp: mp["route"].__setitem__("claimed_distance_ft", 4921)), 'claimed 4921 ft'),
+    ("metric inputs not supported (units, circle radius, claimed distance)", [
+        (m(lambda mp: mp.__setitem__("units", "metric")), 'every book uses imperial units'),
+        (m(lambda mp: mp["stops"][0].__setitem__("area_radius_m", 40)), '`area_radius_m` is retired'),
+        (m(lambda mp: mp["route"].__setitem__("claimed_distance_m", 1500)), '`claimed_distance_m` is retired'),
+     ], None),
     ("unknown OSM target", m(lambda mp: mp["stops"][0].__setitem__("target", "way/1")), 'not found in cached OSM data'),
     ("circle with no landmark within 500 ft", m(lambda mp: mp.__setitem__("landmarks", mp["landmarks"][:1])), 'no landmark within 500 ft'),
     ("road landmark not found", m(lambda mp: mp["landmarks"].append({"road": "Nowhere Street"})), 'no mapped road named'),
@@ -99,8 +104,16 @@ json.dump(man, open(tp, "w"))
 fails = 0
 try:
     for name, mut, expect in CASES:
-        engine.SPEC_DIR = FIX
-        ok, msg = blocked(mut, expect)
+        if isinstance(mut, list):          # one rule tried several ways: every way must be blocked
+            results = []
+            for sub_mut, sub_expect in mut:
+                engine.SPEC_DIR = FIX
+                results.append(blocked(sub_mut, sub_expect))
+            ok = all(r[0] for r in results)
+            msg = " | ".join(r[1] for r in results)
+        else:
+            engine.SPEC_DIR = FIX
+            ok, msg = blocked(mut, expect)
         fails += not ok
         print(f"{'PASS' if ok else 'FAIL'}  {name}: {msg}")
 finally:
